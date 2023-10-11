@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/ol@v7.1.0/ol.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Wendy+One|Donegal+One|Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="title"><h1 class="title"> Epileptic Seizure Recognition </h1></div>
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <div class="centeredDiv">
+                <select onchange="showCharts(this.value, 'dataObservation')" required>
+                    <option value="../Server/outputImg/y_inspection/y_differences.png">Standard deviation</option>
+                    <option value="../Server/outputImg/y_inspection/row_number.png">Kernel Density Estimate</option>
+                </select>
+            </div>
+            <div class="myInnerSlides fade centeredDiv">
+                <img id="dataObservation" src="">
+            </div>
+        </div>
+        <div class="mySlides fade">
+            <div class="centeredDiv">
+                <select onchange="showCharts(this.value, 'dataAnalisys')" required>
+                    <option value="../Server/outputImg/eeg_standard_deviation.png">Standard deviation</option>
+                    <option value="../Server/outputImg/eeg_kde.png">Kernel Density Estimate</option>
+                    <option value="../Server/outputImg/eeg_heatmap.png">Heatmap</option>
+                    <option value="../Server/outputImg/altitude/mean_altitude.png">Mean altitude</option>
+                    <option value="../Server/outputImg/altitude/median_altitude.png">Median altitude</option>
+                    <option value="../Server/outputImg/altitude/min_max_altitude.png">Min/max altitude</option>
+                    <option value="../Server/outputImg/altitude/extreme_min_max_altitude.png">Extreme min/max altitude</option>
+                    <option value="../Server/outputImg/frequence/mean_frequence.png">Mean frequnce</option>
+                    <option value="../Server/outputImg/frequence/median_frequence.png">Median frequnce</option>
+                    <option value="../Server/outputImg/frequence/min_max_frequence.png">Min/max frequnce</option>
+                </select>
+            </div>
+            <div class="myInnerSlides fade centeredDiv">
+                <img id="dataAnalisys" height="440" src="">
+            </div>
+        </div>
+        <div class="mySlides fade">
+            <div class="myInnerSlides fade centeredDiv">
+                <img id="dataAnalisys" width="95%" src="../Server/outputImg/evaluation/total_ml.png">
+            </div>
+        </div>
+        <div class="mySlides fade">
+            <div class="centeredDiv">
+                <select onchange="showChartsML(this.value)" required>
+                    <option value="DecisionTreeClassifier">Decision Tree Classifier</option>
+                    <option value="DecisionTreeRegressor">Decision Tree Regressor</option>
+                    <option value="ExtraTreeClassifier">Extra Tree Classifier</option>
+                    <option value="GaussianNaiveBayes">Gaussian Naive Bayes</option>
+                    <option value="k-nearestNeighbors">k-nearest Neighbors</option>
+                    <option value="Multi-layerPerceptronClassifier">Multi-layer Perceptron classifier</option>
+                    <option value="NeuralNetwork">Neural Network</option>
+                    <option value="SupportVectorClassification">Support Vector Classification</option>
+                    <option value="ExtraTreeRegressor">Extra Tree Regressor</option>
+                </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 38% 38% 24%; justify-items: center;">
+                <div class="centeredDiv">
+                    <h1 style="margin: 0px;"> Evaluation </h1><br>
+                    <img id="evaluation" height="330" src="">
+                </div>
+                <div class="centeredDiv">
+                    <h1 style="margin: 0px;"> Confusion matrix </h1><br>
+                    <img id="confusion_matrix" height="330" src="">
+                </div>
+                <div class="centeredDiv">
+                    <h1 style="margin: 0px;"> Prediction </h1><br>
+                    <div class="scrollbar_div">
+                        <input type="file" id="csvFile" accept=".csv" />
+                        <button type="submit" id="submitBtn" onclick="getPrediction();">Predict</button><br>
+                        <h3 id="prediction"></h3>
+                        <h3 id="probability"></h3></div><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    <br>
+    
+    <div class="centeredDiv">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+    </div>
+
+    <script src="js/controller.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/requests.js"></script>
+
+</body>
+</html>
