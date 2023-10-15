@@ -3,7 +3,7 @@ var slideIndex = 1;
 var actualML = ""
 showSlides(slideIndex);
 showCharts('../Server/outputImg/y_inspection/y_differences.png', 'dataObservation')
-showCharts('../Server/outputImg/eeg_standard_deviation.png', 'dataAnalisys')
+showCharts('../Server/outputImg/basic/eeg_standard_deviation.png', 'dataAnalisys')
 showChartsML('DecisionTreeClassifier')
 
 function plusSlides(n) {
