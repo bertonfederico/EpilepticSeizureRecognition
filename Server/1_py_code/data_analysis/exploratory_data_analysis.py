@@ -51,7 +51,7 @@ def create_box_plot(dataframe):
         x='y',
         y='EEG',
     ).fig.suptitle("Standard deviation")
-    print_save_plots("eeg_standard_deviation", False)
+    print_save_plots("basic\\eeg_standard_deviation", False)
 
 
 
@@ -60,7 +60,7 @@ def create_heatmap(dataframe):
     dataframe['y'] = np.where(dataframe['y'] == 'Epileptic', 1, 0)
     sns.heatmap(dataframe.corr())
     plt.title("Heatmap")
-    print_save_plots("eeg_heatmap", False)
+    print_save_plots("basic\\eeg_heatmap", False)
 
 
 
@@ -72,7 +72,7 @@ def create_kernel_density_estimate(dataframe):
         x='EEG',
         hue='y'
     ).fig.suptitle("Kernel Density Estimate")
-    print_save_plots("eeg_kde", False)
+    print_save_plots("basic\\eeg_kde", False)
 
 
 
@@ -225,5 +225,5 @@ def create_relplot(data, x, y, col, hue, value_type):
 
 def print_save_plots(name, remove_legend):
     if (remove_legend): plt.legend([], [], frameon=False)
-    plt.savefig('Server\outputImg\\' + name + '.png')
+    plt.savefig('Server\\outputImg\\' + name + '.png')
     plt.show()

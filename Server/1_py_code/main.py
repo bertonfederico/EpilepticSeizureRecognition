@@ -9,12 +9,11 @@ from ml_models.svc import Svc
 from ml_models.neural_network import NeuralNetwork
 from ml_models.gaussian_naive_bayes import Gaussian
 from ml_models.k_neighbors_classifier import KNeighborsClass
-from ml_models.m_l_p_classifier import MLPClass
 from ml_models.decision_tree_classifier import DecisionTreeClass
 from ml_models.decision_tree_regressor import DecisionTreeReg
 from ml_models.extra_tree_classifier import ExtraTreeClass
 from ml_models.extra_tree_regressor import ExtraTreeReg
-ml_models = [Svc, KNeighborsClass, NeuralNetwork, Gaussian, MLPClass, DecisionTreeClass, DecisionTreeReg, ExtraTreeClass, ExtraTreeReg]
+ml_models = [Svc, KNeighborsClass, NeuralNetwork, Gaussian, DecisionTreeClass, DecisionTreeReg, ExtraTreeClass, ExtraTreeReg]
 
 
 
