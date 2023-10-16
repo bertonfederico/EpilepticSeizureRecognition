@@ -153,9 +153,6 @@ class AbstractMl(object):
         # training
         pipeline.fit(X, y)
 
-        # test
-        #pipeline.verify(X.sample(n = 5))
-
         # creating .pmml
         sklearn2pmml(pipeline, "Server\\pmml\\" + self.restr_name + ".pmml")
 
