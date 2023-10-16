@@ -31,7 +31,7 @@ data.drop('Unnamed', axis=1, inplace=True)
 ##################################################################
 ### Observation of differences between y=1, y=2, y=3, y=4, y=5 ###
 ##################################################################
-#data_observation.observation(data)
+data_observation.observation(data)
 
 
 
@@ -46,7 +46,7 @@ data['y'] = np.where(data['y'] == 1, 1, 0)
 #################################
 ### Exploratory Data Analysis ###
 #################################
-#exploratory_data_analysis.create_plots(data)
+exploratory_data_analysis.create_plots(data)
 
 
 
