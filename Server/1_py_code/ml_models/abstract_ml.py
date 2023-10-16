@@ -157,4 +157,4 @@ class AbstractMl(object):
         sklearn2pmml(pipeline, "Server\\pmml\\" + self.restr_name + ".pmml")
 
         # starting Openscoring with .pmml
-        subprocess.run(["powershell", "java -cp C:\\Users\\feder\\Documents\\UniPgDevelop\\EpilepticSeizureRecognition\\Server\\lib\\openscoring-client-executable-2.1.1.jar org.openscoring.client.Deployer --model http://localhost:8080/openscoring/model/" + self.restr_name + " --file C:\\Users\\feder\\Documents\\UniPgDevelop\\EpilepticSeizureRecognition\\Server\\pmml\\" + self.restr_name + ".pmml"], shell=True)        
+        subprocess.run(["powershell", "java -cp Server/lib/openscoring-client-executable-2.1.1.jar org.openscoring.client.Deployer --model http://localhost:8080/openscoring/model/" + self.restr_name + " --file Server/pmml/" + self.restr_name + ".pmml"], shell=True)        

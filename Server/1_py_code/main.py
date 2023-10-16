@@ -13,7 +13,7 @@ from ml_models.decision_tree_classifier import DecisionTreeClass
 from ml_models.decision_tree_regressor import DecisionTreeReg
 from ml_models.extra_tree_classifier import ExtraTreeClass
 from ml_models.extra_tree_regressor import ExtraTreeReg
-ml_models = [NeuralNetwork]#Svc, KNeighborsClass, NeuralNetwork, Gaussian, DecisionTreeClass, DecisionTreeReg, ExtraTreeClass, ExtraTreeReg]
+ml_models = [Svc, KNeighborsClass, NeuralNetwork, Gaussian, DecisionTreeClass, DecisionTreeReg, ExtraTreeClass, ExtraTreeReg]
 
 
 
