@@ -100,6 +100,8 @@ plt.legend([], [], frameon=False)
 plt.show()
 ```
 
+<img src="./Server/outputImg/y_inspection/y_differences.png">
+
 It is possible to guess that epileptic EEGs manifest larger electrical
 activities in height (electrical potential) and width (frequency).
 
@@ -121,6 +123,7 @@ fig, ax = plt.subplots()
 ax.pie(sizes, labels=labels, autopct='%1.1f%%')
 fig.suptitle("Number of rows for each value of y")
 ```
+<img src="./Server/outputImg/y_inspection/row_number.png">
 
 ## 🔧 Correction of y-values
 
@@ -152,6 +155,7 @@ heatmap_data = data_exploratory.iloc[:,0:178]
 sns.heatmap(heatmap_data.corr())
 plt.title("Heatmap")
 ```
+<img src="./Server/outputImg/basic/eeg_heatmap.png">
 
 ### EEG potential (*μV*): ***min, max & Standard Deviation*** {#eeg-potential-μv-min-max--standard-deviation}
 
@@ -225,6 +229,9 @@ axes = rel.axes.flat[1]
 axes.axhline(df_potential_min_max[(df_potential_min_max['y'] == 'Epileptic') & (df_potential_min_max['Value type'] == 'Min')]['value'].mean(), ls='--', linewidth=2, color='red')
 axes.axhline(df_potential_min_max[(df_potential_min_max['y'] == 'Epileptic') & (df_potential_min_max['Value type'] == 'Max')]['value'].mean(), ls='--', linewidth=2, color='red')
 ```
+<img src="./Server/outputImg/pot_min_max/cat_plot.png">
+<img src="./Server/outputImg/pot_min_max/kde_plot.png">
+<img src="./Server/outputImg/pot_min_max/rel_plot.png">
 
 Now let\'s try to analyze the difference between epileptic and
 non-epileptic EEG based on the Standard Deviation of the potential:
@@ -274,6 +281,9 @@ rel.fig.subplots_adjust(top=.9)
 rel.fig.suptitle("Relational plot - std potential values")
 rel.set(xticklabels=[])
 ```
+<img src="./Server/outputImg/pot_std/cat_plot.png">
+<img src="./Server/outputImg/pot_std/kde_plot.png">
+<img src="./Server/outputImg/pot_std/rel_plot.png">
 
 It is evident how epileptic seizures are manifested in much larger EEGs
 from the point of view of electrical potential.
@@ -360,6 +370,9 @@ axes.axhline(df_frequence_mean[(df_frequence_mean['y'] == 'Non-epileptic')]['Fre
 axes = ret.axes.flat[1]
 axes.axhline(df_frequence_mean[(df_frequence_mean['y'] == 'Epileptic')]['Freq'].mean(), ls='--', linewidth=2, color='red')
 ```
+<img src="./Server/outputImg/freq/cat_plot.png">
+<img src="./Server/outputImg/freq/kde_plot.png">
+<img src="./Server/outputImg/freq/rel_plot.png">
 
 As noted by the graphs regarding the width of the periods, we can also
 observe this more clearly from the frequency representations: the rhythm
@@ -482,6 +495,8 @@ df
        macro avg       0.96      0.96      0.96      2300
     weighted avg       0.98      0.98      0.98      2300
 
+<img src="./Server/outputImg/evaluation/NeuralNetwork.png">
+
 The test set scores are between 88% and 97%, so Neural Network is an
 excellent Machine Learning algorithm for classification of epileptic
 EEGs!
@@ -498,7 +513,7 @@ cm = confusion_matrix(y_test, Y_hat_test)
 fig, ax = plt.subplots()
 sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabels = ['Non-epileptic', 'Epileptic'], yticklabels = ['Non-epileptic', 'Epileptic'])
 ```
-
+<img src="./Server/outputImg/confusion_matrix/NeuralNetwork.png">
 
 ## ❓ PMML creation: example with Neural Network
 
