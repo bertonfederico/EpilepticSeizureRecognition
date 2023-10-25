@@ -35,10 +35,10 @@ data_observation.observation(data)
 
 
 
-##################################################
+####################################################
 ### Combining the y regarding non-epileptic EEGs ###
-##################################################
-# y = 1 ==> epileptic, else non-epileptic
+####################################################
+# y = 1 ==> epileptic (1), else non-epileptic (0)
 data['y'] = np.where(data['y'] == 1, 1, 0)
 
 

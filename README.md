@@ -139,10 +139,10 @@ ret = sns.relplot(
     edgecolor='#CCFFFF'
 )
 
-ret.set_xlabels("Heartbeat recording", clear_inner=False)
+ret.set_xlabels("Neurological beats recording", clear_inner=False)
 ret.set_ylabels('Extreme min/max altitude' + " value", clear_inner=False)
 ret.fig.subplots_adjust(top=.9)
-ret.fig.suptitle("Extreme min/max altitude value for each heartbeat recording")
+ret.fig.suptitle("Extreme min/max altitude value for each Neurological beats recording")
 ret.set(xticklabels=[])
 
 axes = ret.axes.flat[0]
