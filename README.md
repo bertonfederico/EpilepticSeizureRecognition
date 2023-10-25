@@ -1,4 +1,4 @@
-# 🏥 Epileptic Seizure Recognition {#-epileptic-seizure-recognition}
+# 🏥 Epileptic Seizure Recognition
 
 Epilepsy is a neurological disorder characterized by a predisposition to
 the onset of epileptic (or comitial) seizures. It is one of the most
@@ -22,7 +22,7 @@ the results; in addition, it is possible, via a web page, to insert new
 fragments of electrical activity to visualize their classification
 (epilepsy or not) by choosing a ML model.
 
-## 🚿 Data import and cleaning {#-data-import-and-cleaning}
+## 🚿 Data import and cleaning
 
 Since the first column (i.e., the one showing the exam number from which
 it was obtained) is not needed, it can be removed from the dataset.
@@ -37,7 +37,7 @@ data = pd.read_csv('Dataset/data.csv')
 data.drop('Unnamed', axis=1, inplace=True)
 ```
 
-## 👀 Data Observation {#-data-observation}
+## 👀 Data Observation
 
 The original data from which the dataset was obtained consisted of 500
 different EEG recordings, each of which contained 4097 data points and
@@ -122,7 +122,7 @@ ax.pie(sizes, labels=labels, autopct='%1.1f%%')
 fig.suptitle("Number of rows for each value of y")
 ```
 
-## 🔧 Correction of y-values {#-correction-of-y-values}
+## 🔧 Correction of y-values
 
 Since the epileptogenic rows are only those with y equal to 1, we modify
 the values of y:
@@ -139,7 +139,7 @@ data_exploratory = data.copy()
 data_exploratory['y'] = np.where(data_exploratory['y'] == 1, 'Epileptic', 'Non-epileptic')
 ```
 
-## 📉 Exploratory Data Analysis: examples {#-exploratory-data-analysis-examples}
+## 📉 Exploratory Data Analysis: examples
 
 ### Heatmap
 ``` python
@@ -365,7 +365,7 @@ As noted by the graphs regarding the width of the periods, we can also
 observe this more clearly from the frequency representations: the rhythm
 is far less in the case of epileptic EEGs.
 
-## Ⓜ️ Machine Learning Algorithms: example with Neural Network {#️-machine-learning-algorithms-example-with-neural-network}
+## Ⓜ️ Machine Learning Algorithms: example with Neural Network
 
 Several Machine Learning algorithms have been carried out, including
 
@@ -409,7 +409,7 @@ X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 ```
 
-### Training & test: a bit long 😉 {#training--test-a-bit-long-}
+### Training & test: a bit long 😉
 
 Now treaning can be launched! Let\'s use GridSearchCV to run the
 training with different settings and figure out which one allows better
@@ -500,9 +500,9 @@ sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabel
 ```
 
 
-## ❓ PMML creation: example with Neural Network {#-pmml-creation-example-with-neural-network}
+## ❓ PMML creation: example with Neural Network
 
-### ❗Needs to downgrade SKLEARN to 1.2.2❗ {#needs-to-downgrade-sklearn-to-122}
+### ❗Needs to downgrade SKLEARN to 1.2.2❗
 
 If we want to use what we get from the ML algorithm, it is possible to
 use PMML (Predictive Model Markup Language), which is an open XML-based
