@@ -51,8 +51,8 @@ between {1, 2, 3, 4, 5}:
 
 -   y = 5: normal subjects with eyes open;
 -   y = 4: normal subjects with eyes closed;
--   y = 3: seizure-free recordings from patients with epilepsy. Recordings obtained from hippocampus in the hemisphere opposite the epileptogenic zone;
--   y = 2: seizure-free recordings from patients with epilepsy. Recordings obtained from epileptogenic zone;
+-   y = 3: seizure-free recordings from patients with epilepsy (opposite the epileptogenic zone)
+-   y = 2: seizure-free recordings from patients with epilepsy (epileptogenic zone);
 -   y = 1: recordings from patients with epilepsy showing seizure activity.
 
 ### y diffences
