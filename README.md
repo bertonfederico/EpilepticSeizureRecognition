@@ -1,5 +1,7 @@
 # 🏥 Epileptic Seizure Recognition
 
+![image](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/58f18608-1d61-423b-a5a3-a1dd7dd00abf)
+
 Epilepsy is a neurological disorder characterized by a predisposition to
 the onset of epileptic (or comitial) seizures. It is one of the most
 frequent neurological diseases, with a prevalence of about 1 percent
