@@ -49,13 +49,11 @@ sec ÷ 4096 = 0.0058 sec***.
 Each row is suffixed into 5 types, i.e., the y column contains a value
 between {1, 2, 3, 4, 5}:
 
--   y = 5: recording with eyes open;
--   y = 4: recording with eyes closed;
--   y = 3: recording in cancer patients of electrical activity in
-    non-cancerous parts of the brain;
--   y = 2: recording in tumor patients of electrical activities in tumor
-    parts of the brain;
--   y = 1: epileptogenic rerecording.
+-   y = 5: normal subjects with eyes open;
+-   y = 4: normal subjects with eyes closed;
+-   y = 3: seizure-free recordings from patients with epilepsy. Recordings obtained from hippocampus in the hemisphere opposite the epileptogenic zone;
+-   y = 2: seizure-free recordings from patients with epilepsy. Recordings obtained from epileptogenic zone;
+-   y = 1: recordings from patients with epilepsy showing seizure activity.
 
 ### y diffences
 
