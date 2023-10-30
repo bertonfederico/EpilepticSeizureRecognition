@@ -1,5 +1,6 @@
 # 🏥 Epileptic Seizure Recognition
-![image](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/e4736cd8-3137-4f31-900f-15ed64118328)
+![image](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/bb796ac9-2b2c-485b-9be0-38a834299020)
+
 
 Epilepsy is a neurological disorder characterized by a predisposition to
 the onset of epileptic (or comitial) seizures. It is one of the most
