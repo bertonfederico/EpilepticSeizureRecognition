@@ -37,7 +37,7 @@ def observation(data):
     g.fig.suptitle("y differences")
     g.fig.set_size_inches(13, 5)
     plt.legend([], [], frameon=False)
-    plt.savefig('Server\\outputImg\\y_inspection\\y_differences.png')
+    plt.savefig('..\\outputImg\\y_inspection\\y_differences.png')
     plt.show()
 
     # Checking the number of rows for each value of y
@@ -53,5 +53,5 @@ def observation(data):
     fig, ax = plt.subplots()
     ax.pie(sizes, labels=labels, autopct='%1.1f%%')
     fig.suptitle("Number of rows for each value of y")
-    plt.savefig('Server\\outputImg\\y_inspection\\row_number.png')
+    plt.savefig('..\\outputImg\\y_inspection\\row_number.png')
     plt.show()

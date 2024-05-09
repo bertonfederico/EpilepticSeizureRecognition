@@ -8,12 +8,12 @@ from data_analysis import data_observation, exploratory_data_analysis
 from ml_models.svc import Svc
 from ml_models.neural_network import NeuralNetwork
 from ml_models.gaussian_naive_bayes import Gaussian
-from ml_models.k_neighbors_classifier import KNeighborsClass
 from ml_models.decision_tree_classifier import DecisionTreeClass
-from ml_models.decision_tree_regressor import DecisionTreeReg
 from ml_models.extra_tree_classifier import ExtraTreeClass
-from ml_models.extra_tree_regressor import ExtraTreeReg
-ml_models = [Svc, KNeighborsClass, NeuralNetwork, Gaussian, DecisionTreeClass, DecisionTreeReg, ExtraTreeClass, ExtraTreeReg]
+ml_models = [DecisionTreeClass, ExtraTreeClass, Gaussian, Svc, NeuralNetwork]
+
+import warnings
+warnings.filterwarnings('ignore')
 
 
 
@@ -22,7 +22,7 @@ ml_models = [Svc, KNeighborsClass, NeuralNetwork, Gaussian, DecisionTreeClass, D
 ### Loading and arrangement of the dataset ###
 ##############################################
 # Loading
-data = pd.read_csv('Dataset/data.csv')
+data = pd.read_csv('../../Dataset/data.csv')
 # Removing first column (not useful)
 data.drop('Unnamed', axis=1, inplace=True)
 

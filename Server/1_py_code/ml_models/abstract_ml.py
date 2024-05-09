@@ -1,6 +1,5 @@
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report
-from sklearn.metrics import f1_score, accuracy_score, cohen_kappa_score, jaccard_score, precision_score, recall_score, balanced_accuracy_score
+from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, roc_auc_score
 import pandas as pd
 import dataframe_image as dfi
 import matplotlib.pyplot as plt
@@ -31,7 +30,7 @@ class AbstractMl(object):
     grid_pmml = None
     is_last = None
 
-    eval = ['Accuracy:', 'F1:', 'Cohen Kappa:', 'Jaccard:', 'Precision:', 'Recall:', 'Balanced Accuracy:']
+    eval = ['Accuracy:', 'Balanced Accuracy:', 'Precision:', 'Recall:', 'F1:', 'ROC curve:']
     dict = {'Evaluation': eval}
     total_df = pd.DataFrame(dict)
 
@@ -83,38 +82,39 @@ class AbstractMl(object):
 
 
 
-    #################################
-    ########## Evaluation ###########
-    #################################
+    ########################################
+    ########## Metrix evaluation ###########
+    ########################################
     def evaluation(self):
-        # creating evaluation dataframe image
+        # evaluating metrix
         accuracy_score_val = accuracy_score(self.y_test, self.Y_hat_test)
-        f1_score_val = f1_score(self.y_test, self.Y_hat_test)
-        cohen_score_val = cohen_kappa_score(self.y_test, self.Y_hat_test)
-        jaccard_score_val = jaccard_score(self.y_test, self.Y_hat_test)
+        balanced_score_val = balanced_accuracy_score(self.y_test, self.Y_hat_test)
         precision_score_val = precision_score(self.y_test, self.Y_hat_test)
         recall_score_val = recall_score(self.y_test, self.Y_hat_test)
-        balanced_score_val = balanced_accuracy_score(self.y_test, self.Y_hat_test)
-        score = [accuracy_score_val, f1_score_val, cohen_score_val, jaccard_score_val, precision_score_val, recall_score_val, balanced_score_val]
+        f1_score_val = f1_score(self.y_test, self.Y_hat_test)
+        roc_curve_val = roc_auc_score(self.y_test, self.Y_hat_test)
+
+        # creating evaluation dataframe image
+        score = [accuracy_score_val, balanced_score_val, precision_score_val, recall_score_val, f1_score_val, roc_curve_val]
         dict = {'Evaluation': self.eval, 'Score on the test set': score}
         df = pd.DataFrame(dict)
-        df = df.style.background_gradient()
-        dfi.export(df, 'Server\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize = 30)
+        df = df.style.background_gradient(vmin=0.8, vmax=1.0)
+        dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize = 30)
 
-        # printing evaluation
+        # printing metrix evaluations
         print("Accuracy score on the test set: ", accuracy_score_val)
-        print("F1 score on the test set: ", f1_score_val)
-        print("Cohen Kappa Score on the test set: ", cohen_score_val)
-        print("Jaccard Score on the test set: ", jaccard_score_val)
+        print("Balanced Accuracy score on the test set: ", balanced_score_val)
         print("Precision Score on the test set: ", precision_score_val)
-        print("Recall Score on the test set: ", recall_score_val)
-        print("Balanced Accuracy Score on the test set: ", balanced_score_val, "\n")
+        print("Recall score on the test set: ", recall_score_val)
+        print("F1 score on the test set: ", f1_score_val)
+        print("ROC curve score on the test set: ", roc_curve_val, "\n")
+
 
         # adding to total dataframe
         self.total_df[self.eval_name] = score
         if (self.is_last):
-            self.total_df = self.total_df.style.background_gradient()
-            dfi.export(self.total_df, 'Server\\outputImg\\evaluation\\total_ml.png', fontsize = 30)
+            self.total_df = self.total_df.style.background_gradient(vmin=0.8, vmax=1.0)
+            dfi.export(self.total_df, '..\\outputImg\\evaluation\\total_ml.png', fontsize = 30)
 
 
 
@@ -133,7 +133,7 @@ class AbstractMl(object):
         # heatmap plot
         fig, ax = plt.subplots()
         sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabels = ['Non-epileptic', 'Epileptic'], yticklabels = ['Non-epileptic', 'Epileptic'])
-        plt.savefig('Server\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
+        plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
 
 
 
@@ -154,7 +154,7 @@ class AbstractMl(object):
         pipeline.fit(X, y)
 
         # creating .pmml
-        sklearn2pmml(pipeline, "Server\\pmml\\" + self.restr_name + ".pmml")
+        sklearn2pmml(pipeline, "..\\pmml\\" + self.restr_name + ".pmml")
 
         # starting Openscoring with .pmml
         subprocess.run(["powershell", "java -cp Server/lib/openscoring-client-executable-2.1.1.jar org.openscoring.client.Deployer --model http://localhost:8080/openscoring/model/" + self.restr_name + " --file Server/pmml/" + self.restr_name + ".pmml"], shell=True)        

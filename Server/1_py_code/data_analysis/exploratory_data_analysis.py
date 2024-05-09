@@ -182,5 +182,5 @@ def create_rel_plot(df, x, y, col, title, hue, style, axline_numb, folder_name):
 
 def print_save_plots(name, remove_legend):
     if (remove_legend): plt.legend([], [], frameon=False)
-    plt.savefig('Server\\outputImg\\' + name + '.png')
+    plt.savefig('..\\outputImg\\' + name + '.png')
     plt.show()

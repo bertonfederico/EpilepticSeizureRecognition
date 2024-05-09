@@ -5,6 +5,5 @@ REM CREATING ML MODELS
 py ../1_py_code/main.py
 
 REM STARTING CLIENT INSTANCE IN GOOGLE CHROME AND DISABLING CHROME SECURITY
-cd ..\..
-cd Client
+cd ..\..\Client
 "C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=%LOCALAPPDATA%\Google\chromeTemp %CD%\homePage.html
