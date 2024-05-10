@@ -155,6 +155,3 @@ class AbstractMl(object):
 
         # creating .pmml
         sklearn2pmml(pipeline, "..\\pmml\\" + self.restr_name + ".pmml")
-
-        # starting Openscoring with .pmml
-        subprocess.run(["powershell", "java -cp Server/lib/openscoring-client-executable-2.1.1.jar org.openscoring.client.Deployer --model http://localhost:8080/openscoring/model/" + self.restr_name + " --file Server/pmml/" + self.restr_name + ".pmml"], shell=True)        
