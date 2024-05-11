@@ -71,5 +71,5 @@ X_test = sc.transform(X_test)
 #################################
 for i, model in enumerate(ml_models):
     act_model = model(X_train, X_test, y_train, y_test, (i == (len(ml_models) - 1)))
-    act_model.run_model()
+    #act_model.run_model()
     act_model.create_pmml(X, y)

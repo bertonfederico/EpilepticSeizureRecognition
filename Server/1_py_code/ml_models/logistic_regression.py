@@ -13,7 +13,7 @@ class LogisticReg(AbstractMl):
             'max_iter': [1000, 10000]                           # Maximum iterations
         }
         self.grid_pmml = {
-            "penalty": [None],                                  # Penalty type (none, lasso, ridge)
-            'max_iter': [1000]                                  # Maximum iterations
+            "penalty": 'none',                                  # Penalty type (none, lasso, ridge)
+            'max_iter': 1000                                  # Maximum iterations
         }
         super().__init__(X_train, X_test, y_train, y_test, is_last)
