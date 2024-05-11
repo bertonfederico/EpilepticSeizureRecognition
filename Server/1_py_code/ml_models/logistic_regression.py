@@ -6,7 +6,7 @@ class LogisticReg(AbstractMl):
 
     def __init__(self, X_train, X_test, y_train, y_test, is_last):
         self.model_name = "Logistic regression"
-        self.eval_name = "LogReg"
+        self.eval_name = "LogisticRegression"
         self.model_class = LogisticRegression
         self.grid = {
             "penalty": [None, 'l1', 'l2'],                      # Penalty type (none, lasso, ridge)

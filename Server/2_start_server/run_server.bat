@@ -17,7 +17,7 @@ for /l %%i in (1,1,%loops%) do (
 
 REM LAUNCHING .PMML ON OPENSCORING
 for %%i in (
-    "DecisionTreeClassifier" "ExtraTreeClassifier" "GaussianNaiveBayes" "NeuralNetwork" "SupportVectorClassification"
+    "LogisticRegression" "NeuralNetwork" "SupportVectorClassification"
 ) do (
     java -cp ../lib/openscoring-client-executable-2.1.1.jar org.openscoring.client.Deployer --model http://localhost:8080/openscoring/model/%%i --file ../pmml/%%i.pmml
 )
