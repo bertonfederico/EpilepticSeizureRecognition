@@ -14,7 +14,7 @@ sleep 10
 
 
 # LAUNCHING .PMML ON OPENSCORING
-pmmlnames=("DecisionTreeClassifier" "ExtraTreeClassifier" "GaussianNaiveBayes" "NeuralNetwork" "SupportVectorClassification")
+pmmlnames=("LogisticRegression" "NeuralNetwork" "SupportVectorClassification")
 for pmmlname in "${pmmlnames[@]}"; do
   java -cp ../lib/openscoring-client-executable-2.1.1.jar org.openscoring.client.Deployer --model http://localhost:8080/openscoring/model/"$pmmlname" --file ../pmml/"$pmmlname".pmml
 done
