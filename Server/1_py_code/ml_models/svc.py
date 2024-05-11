@@ -6,7 +6,7 @@ class Svc(AbstractMl):
 
     def __init__(self, X_train, X_test, y_train, y_test, is_last):
         self.model_name = "Support Vector Classification"
-        self.eval_name = "SVC"
+        self.eval_name = "Support Vector Class."
         self.model_class = SVC
         self.grid = {
             'kernel': ['rbf', 'linear', 'poly', 'sigmoid'],     # Kernel type
