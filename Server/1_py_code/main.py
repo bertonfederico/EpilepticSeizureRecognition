@@ -7,10 +7,9 @@ from data_analysis import data_observation, exploratory_data_analysis
 
 from ml_models.svc import Svc
 from ml_models.neural_network import NeuralNetwork
-from ml_models.gaussian_naive_bayes import Gaussian
 from ml_models.decision_tree_classifier import DecisionTreeClass
-from ml_models.extra_tree_classifier import ExtraTreeClass
-ml_models = [DecisionTreeClass, ExtraTreeClass, Gaussian, Svc, NeuralNetwork]
+from ml_models.logistic_regression import LogisticReg
+ml_models = [LogisticReg, DecisionTreeClass, Svc, NeuralNetwork]
 
 import warnings
 warnings.filterwarnings('ignore')

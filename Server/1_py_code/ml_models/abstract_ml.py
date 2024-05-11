@@ -1,15 +1,13 @@
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, roc_auc_score
-import pandas as pd
 import dataframe_image as dfi
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
+from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, \
+    balanced_accuracy_score, roc_auc_score
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import GridSearchCV
 from sklearn2pmml import sklearn2pmml
 from sklearn2pmml.pipeline import PMMLPipeline
-import subprocess
-
-
 
 
 class AbstractMl(object):
@@ -48,7 +46,6 @@ class AbstractMl(object):
         self.y_test = y_test
         self.is_last = is_last
         self.restr_name = self.model_name.replace(" ", "")
-        self.grid = {}
 
 
 
@@ -57,8 +54,8 @@ class AbstractMl(object):
     #################################
     def run_model(self):
         self.train_test()
-        self.evaluation()
         self.confusion_matrix()
+        self.evaluation()
 
 
 
@@ -75,10 +72,8 @@ class AbstractMl(object):
         # test
         self.Y_hat_test = cross_val.predict(self.X_test)
 
-        # printing results
-        print('Tuned hpyerparameters (best parameters): ', cross_val.best_params_)
-        print('Estimator that was chosen by the search: ', cross_val.best_estimator_)
-        print('Model classification report with GridSearcg CV: \n', classification_report(self.y_test, self.Y_hat_test))
+        # printing hyperparameters results
+        print('Best hyperparameters: ', cross_val.best_params_)
 
 
 
@@ -86,7 +81,11 @@ class AbstractMl(object):
     ########## Metrix evaluation ###########
     ########################################
     def evaluation(self):
-        # evaluating metrix
+
+        # printing GridSearchCV metrics
+        print('GridSearchCV metrics: \n', classification_report(self.y_test, self.Y_hat_test))
+
+        # evaluating metrics
         accuracy_score_val = accuracy_score(self.y_test, self.Y_hat_test)
         balanced_score_val = balanced_accuracy_score(self.y_test, self.Y_hat_test)
         precision_score_val = precision_score(self.y_test, self.Y_hat_test)
@@ -101,7 +100,7 @@ class AbstractMl(object):
         df = df.style.background_gradient(vmin=0.8, vmax=1.0)
         dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize = 30)
 
-        # printing metrix evaluations
+        # printing metrics evaluations
         print("Accuracy score on the test set: ", accuracy_score_val)
         print("Balanced Accuracy score on the test set: ", balanced_score_val)
         print("Precision Score on the test set: ", precision_score_val)
@@ -122,6 +121,8 @@ class AbstractMl(object):
     ########## Evaluation ###########
     #################################
     def confusion_matrix(self):
+        print('### Results with best hyperparameters ###')
+
         cm = confusion_matrix(self.y_test, self.Y_hat_test)
 
         # results
