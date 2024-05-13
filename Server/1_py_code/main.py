@@ -16,6 +16,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+
 ##############################################
 ### Loading and arrangement of the dataset ###
 ##############################################
@@ -24,10 +25,12 @@ data = pd.read_csv('../../Dataset/data.csv')
 # Removing first column (not useful)
 data.drop('Unnamed', axis=1, inplace=True)
 
+
 ##################################################################
 ### Observation of differences between y=1, y=2, y=3, y=4, y=5 ###
 ##################################################################
 data_observation.observation(data)
+
 
 ####################################################
 ### Combining the y regarding non-epileptic EEGs ###
@@ -35,10 +38,12 @@ data_observation.observation(data)
 # y = 1 ==> epileptic (1), else non-epileptic (0)
 data['y'] = np.where(data['y'] == 1, 1, 0)
 
+
 #################################
 ### Exploratory Data Analysis ###
 #################################
 exploratory_data_analysis.create_plots(data)
+
 
 #################################
 ######### Preprocessing #########
@@ -54,6 +59,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
+
 
 #################################
 ####### Machine Learning ########

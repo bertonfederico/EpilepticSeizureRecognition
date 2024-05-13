@@ -28,7 +28,6 @@ def create_plots(input_data):
 #################################
 ### Exploratory Data Analysis ###
 #################################
-
 # Heatmap
 def create_heatmap(dataframe):
     # removing y values
@@ -75,6 +74,7 @@ def create_frequence_plot(input_data):
     create_rel_plot(frequence_df, 'id', 'freq', 'y', 'Frequence values (Hz)', None, None, 1, folder_name)
 
 
+
 ################################
 ####### Prepare methods ########
 ################################
@@ -111,6 +111,7 @@ def create_df_frequence(input_data):
     df_frequence_prepare['y'] = input_data['y']
     df_frequence_prepare = df_frequence_prepare[['id', 'freq', 'y']]
     return df_frequence_prepare
+
 
 
 ################################
