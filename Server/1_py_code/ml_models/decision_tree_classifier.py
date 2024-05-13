@@ -2,7 +2,6 @@ from sklearn.tree import DecisionTreeClassifier
 from ml_models.abstract_ml import AbstractMl
 
 
-
 class DecisionTreeClass(AbstractMl):
 
     def __init__(self, X_train, X_test, y_train, y_test, is_last):

@@ -3,17 +3,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import warnings
+
 warnings.filterwarnings("ignore", "is_categorical_dtype")
 warnings.filterwarnings("ignore", "use_inf_as_na")
-
-
 
 
 ################################
 ############# Main #############
 ################################
 def create_plots(input_data):
-
     data_exploratory = input_data.copy()
     data_exploratory['y'] = np.where(data_exploratory['y'] == 1, 'Epileptic', 'Non-epileptic')
 
@@ -27,8 +25,6 @@ def create_plots(input_data):
     create_frequence_plot(data_exploratory)
 
 
-
-
 #################################
 ### Exploratory Data Analysis ###
 #################################
@@ -36,7 +32,7 @@ def create_plots(input_data):
 # Heatmap
 def create_heatmap(dataframe):
     # removing y values
-    heatmap_data = dataframe.iloc[:,0:178]
+    heatmap_data = dataframe.iloc[:, 0:178]
 
     # creating heatmap
     sns.heatmap(heatmap_data.corr())
@@ -53,11 +49,13 @@ def create_pontential_plot(input_data):
 
 # Min/max potential plots
 def create_min_max_pontential_plot(potential_df):
-    df_potential_min_max = (potential_df.melt(id_vars=['id', 'y'], var_name='Value type', value_name='value', ignore_index=True))
+    df_potential_min_max = (
+        potential_df.melt(id_vars=['id', 'y'], var_name='Value type', value_name='value', ignore_index=True))
     folder_name = 'pot_min_max'
     create_cat_plot(df_potential_min_max, 'y', 'value', 'Potential values (μV)', 'Value type', folder_name)
     create_kde(df_potential_min_max, 'value', 'y', 'Potential values (μV)', 'Value type', folder_name)
-    create_rel_plot(df_potential_min_max, 'id', 'value', 'y', 'Potential values (μV)', 'Value type', 'Value type', 2, folder_name)
+    create_rel_plot(df_potential_min_max, 'id', 'value', 'y', 'Potential values (μV)', 'Value type', 'Value type', 2,
+                    folder_name)
 
 
 # Std potential plots
@@ -77,8 +75,6 @@ def create_frequence_plot(input_data):
     create_rel_plot(frequence_df, 'id', 'freq', 'y', 'Frequence values (Hz)', None, None, 1, folder_name)
 
 
-
-
 ################################
 ####### Prepare methods ########
 ################################
@@ -87,7 +83,7 @@ def create_df_potential(input_data):
 
     # std
     df_potential_prepare = df_potential_prepare.std(axis=1).reset_index()
-    df_potential_prepare.rename(columns={0: "std"}, inplace = True)
+    df_potential_prepare.rename(columns={0: "std"}, inplace=True)
 
     # extreme min/max
     df_potential_prepare['min'] = input_data.min(axis=1, numeric_only=True)
@@ -104,19 +100,17 @@ def create_df_frequence(input_data):
 
     # max
     df_frequence_prepare['max_number'] = 0
-    for count in range(2,178):
-        df_frequence_prepare.loc[(input_data["X"+str(count-1)] < input_data["X"+str(count)]) &
-                                (input_data["X"+str(count)] > input_data["X"+str(count+1)]),
-                        "max_number"] = df_frequence_prepare['max_number'] + 1
-    df_frequence_prepare['freq'] = df_frequence_prepare['max_number']/1.02
+    for count in range(2, 178):
+        df_frequence_prepare.loc[(input_data["X" + str(count - 1)] < input_data["X" + str(count)]) &
+                                 (input_data["X" + str(count)] > input_data["X" + str(count + 1)]),
+        "max_number"] = df_frequence_prepare['max_number'] + 1
+    df_frequence_prepare['freq'] = df_frequence_prepare['max_number'] / 1.02
 
     # id & y
     df_frequence_prepare['id'] = df_frequence_prepare.index + 1
     df_frequence_prepare['y'] = input_data['y']
     df_frequence_prepare = df_frequence_prepare[['id', 'freq', 'y']]
     return df_frequence_prepare
-
-
 
 
 ################################
@@ -148,7 +142,7 @@ def create_kde(df, x, hue, title, col, folder_name):
     dist.fig.suptitle("Kernel Density Estimate - " + title)
     dist.set_xlabels(title, clear_inner=False)
     print_save_plots(folder_name + "\\kde_plot", False)
-    
+
 
 def create_rel_plot(df, x, y, col, title, hue, style, axline_numb, folder_name):
     ret = sns.relplot(

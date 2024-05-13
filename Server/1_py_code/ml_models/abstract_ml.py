@@ -11,7 +11,6 @@ from sklearn2pmml.pipeline import PMMLPipeline
 
 
 class AbstractMl(object):
-
     #################################
     ########### variables ###########
     #################################
@@ -32,9 +31,6 @@ class AbstractMl(object):
     dict = {'Evaluation': eval}
     total_df = pd.DataFrame(dict)
 
-
-
-
     #################################
     ############## init #############
     #################################
@@ -47,8 +43,6 @@ class AbstractMl(object):
         self.is_last = is_last
         self.restr_name = self.model_name.replace(" ", "")
 
-
-
     #################################
     ########### Run model ###########
     #################################
@@ -57,14 +51,12 @@ class AbstractMl(object):
         self.confusion_matrix()
         self.evaluation()
 
-
-
     #################################
     ####### Training and Test #######
     #################################
     def train_test(self):
-        #preparing
-        cross_val = GridSearchCV(self.model_class(), self.grid, cv = 7, n_jobs=2, verbose=10)
+        # preparing
+        cross_val = GridSearchCV(self.model_class(), self.grid, cv=7, n_jobs=2, verbose=10)
 
         # training
         cross_val.fit(self.X_train, self.y_train)
@@ -75,13 +67,10 @@ class AbstractMl(object):
         # printing hyperparameters results
         print('Best hyperparameters: ', cross_val.best_params_)
 
-
-
     ########################################
     ########## Metrix evaluation ###########
     ########################################
     def evaluation(self):
-
         # printing GridSearchCV metrics
         print('GridSearchCV metrics: \n', classification_report(self.y_test, self.Y_hat_test))
 
@@ -94,11 +83,12 @@ class AbstractMl(object):
         roc_curve_val = roc_auc_score(self.y_test, self.Y_hat_test)
 
         # creating evaluation dataframe image
-        score = [accuracy_score_val, balanced_score_val, precision_score_val, recall_score_val, f1_score_val, roc_curve_val]
+        score = [accuracy_score_val, balanced_score_val, precision_score_val, recall_score_val, f1_score_val,
+                 roc_curve_val]
         dict = {'Evaluation': self.eval, 'Score on the test set': score}
         df = pd.DataFrame(dict)
         df = df.style.background_gradient(vmin=0.8, vmax=1.0)
-        dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize = 30)
+        dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize=30)
 
         # printing metrics evaluations
         print("Accuracy score on the test set: ", accuracy_score_val)
@@ -108,14 +98,11 @@ class AbstractMl(object):
         print("F1 score on the test set: ", f1_score_val)
         print("ROC curve score on the test set: ", roc_curve_val, "\n")
 
-
         # adding to total dataframe
         self.total_df[self.eval_name] = score
         if (self.is_last):
             self.total_df = self.total_df.style.background_gradient(vmin=0.8, vmax=1.0)
-            dfi.export(self.total_df, '..\\outputImg\\evaluation\\total_ml.png', fontsize = 30)
-
-
+            dfi.export(self.total_df, '..\\outputImg\\evaluation\\total_ml.png', fontsize=30)
 
     #################################
     ########## Evaluation ###########
@@ -133,21 +120,15 @@ class AbstractMl(object):
 
         # heatmap plot
         fig, ax = plt.subplots()
-        sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabels = ['Non-epileptic', 'Epileptic'], yticklabels = ['Non-epileptic', 'Epileptic'])
+        sns.heatmap(cm, ax=ax, annot=True, cmap=plt.cm.Reds, fmt='d', xticklabels=['Non-epileptic', 'Epileptic'],
+                    yticklabels=['Non-epileptic', 'Epileptic'])
         plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
-
-
-
-
-
-
 
     #################################
     ######### PMML CREATION #########
     #################################
     ###### NEEDS TO DOWNGRADE sklearn TO 1.2.2!! ######
     def create_pmml(self, X, y):
-
         # preparing
         pipeline = PMMLPipeline([("classifier", self.model_class(**self.grid_pmml))])
 

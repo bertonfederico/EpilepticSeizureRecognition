@@ -2,9 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 def observation(data):
     sns.set_style("whitegrid")
-    
+
     # Selectiong n rows for each value of y
     n = 3
     data_y_1 = data[data['y'] == 1][:n]
@@ -16,13 +17,14 @@ def observation(data):
 
     # Creating a dataframe with one row for each value of X
     df_splitted_seizure_short = (samples_to_show
-                    .melt(id_vars=['y'], var_name='time_label', value_name='EEG', ignore_index=False)
-                    .reset_index()
-                    .rename(columns={'index': 'id'})
-                )
+                                 .melt(id_vars=['y'], var_name='time_label', value_name='EEG', ignore_index=False)
+                                 .reset_index()
+                                 .rename(columns={'index': 'id'})
+                                 )
 
     # Getting time_index column from time_label
-    df_splitted_seizure_short['time_label'] = (df_splitted_seizure_short['time_label'].str.translate(str.maketrans('', '', 'X')).astype(int))
+    df_splitted_seizure_short['time_label'] = (
+        df_splitted_seizure_short['time_label'].str.translate(str.maketrans('', '', 'X')).astype(int))
 
     # Creating and showing the graph
     g = sns.relplot(
@@ -47,7 +49,6 @@ def observation(data):
     data_y_4 = data[data['y'] == 4]
     data_y_5 = data[data['y'] == 5]
 
-    
     labels = 'y = 1', 'y = 2', 'y = 3', 'y = 4', 'y = 5'
     sizes = [len(data_y_1.index), len(data_y_2.index), len(data_y_3.index), len(data_y_4.index), len(data_y_5.index)]
     fig, ax = plt.subplots()
