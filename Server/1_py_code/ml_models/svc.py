@@ -1,19 +1,18 @@
 from sklearn.svm import SVC
-from ml_models.abstract_ml import AbstractMl
+
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import abstract_ml
 
 
-class Svc(AbstractMl):
+class Svc(abstract_ml.AbstractMl):
 
-    def __init__(self, X_train, X_test, y_train, y_test, is_last):
-        self.model_name = "Support Vector Classification"
-        self.eval_name = "Support Vector Class."
-        self.model_class = SVC
-        self.grid = {
-            'kernel': ['rbf', 'linear', 'poly', 'sigmoid'],     # Kernel type
-            "C": [0.01, 0.1, 1, 10],                            # Regularization parameter
+    def __init__(self, is_last):
+        model_name = "Support Vector Classification"
+        model_class = SVC
+        test_grid = {
+            'kernel': ['rbf', 'poly', 'sigmoid'],     # Kernel type
+            "C": [0.01, 0.1, 1, 10],                  # Regularization parameter
         }
-        self.grid_pmml = {
-            'kernel': 'rbf',                                    # Kernel type
-            "C": 10                                             # Regularization parameter
-        }
-        super().__init__(X_train, X_test, y_train, y_test, is_last)
+        super().__init__(is_last, model_name, test_grid, model_class)

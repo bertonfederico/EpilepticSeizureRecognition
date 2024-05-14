@@ -2,8 +2,7 @@ import dataframe_image as dfi
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, \
-    balanced_accuracy_score, roc_auc_score
+from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, roc_auc_score
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from sklearn2pmml import sklearn2pmml
@@ -11,86 +10,131 @@ from sklearn2pmml.pipeline import PMMLPipeline
 
 
 class AbstractMl(object):
-    #################################
-    ########### variables ###########
-    #################################
-    model_name = None
-    model_class = None
-    restr_name = None
-    eval_name = None
-    X_train = None
-    X_test = None
-    y_train = None
-    y_test = None
-    Y_hat_test = None
-    grid = None
-    grid_pmml = None
-    is_last = None
 
-    eval = ['Accuracy:', 'Balanced Accuracy:', 'Precision:', 'Recall:', 'F1:', 'ROC curve:']
-    dict = {'Evaluation': eval}
-    total_df = pd.DataFrame(dict)
+    def __init__(self, is_last, model_name, test_grid, model_class):
+        print('\n\n################################# ' + model_name + ' #################################')
+        self.is_last_ml_algorithm = is_last
+        self.restr_name = model_name.replace(" ", "")
+        self.model_class = model_class
+        self.test_grid = test_grid
+        self.eval = ['Accuracy:', 'Balanced Accuracy:', 'Precision:', 'Recall:', 'F1:', 'ROC curve:']
+        dictionary = {'Evaluation': self.eval}
+        self.total_df = pd.DataFrame(dictionary)
 
-    #################################
-    ############## init #############
-    #################################
-    def __init__(self, X_train, X_test, y_train, y_test, is_last):
-        print('\n\n################################# ' + self.model_name + ' #################################')
-        self.X_train = X_train
-        self.X_test = X_test
-        self.y_train = y_train
-        self.y_test = y_test
-        self.is_last = is_last
-        self.restr_name = self.model_name.replace(" ", "")
+    def train_assessment_phase(self, X_train, y_train, X_development, y_development):
+        """
+        Train & test phase for hyperparameters
 
-    #################################
-    ########### Run model ###########
-    #################################
-    def run_model(self):
-        self.train_test()
-        self.confusion_matrix()
-        self.evaluation()
+        :param X_train: features dataset for model training
+        :param y_train: y dataset for model training
+        :param X_development: features dataset for test prediction
+        :param y_development: y dataset for prediction checking
+        :return: best_params_
+        """
 
-    #################################
-    ####### Training and Test #######
-    #################################
-    def train_test(self):
-        # preparing
-        cross_val = GridSearchCV(self.model_class(), self.grid, cv=7, n_jobs=2, verbose=10)
+        Y_hat_test, best_params_ = self.train_assessment(X_train, y_train, X_development, y_development)
+        self.confusion_matrix(y_development, Y_hat_test, False)
+        self.evaluation(y_development, Y_hat_test, False)
+        return best_params_
 
-        # training
-        cross_val.fit(self.X_train, self.y_train)
+    def train_assessment(self, X_train, y_train, X_test, y_test):
+        """ preparing """
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7, verbose=10)
 
-        # test
-        self.Y_hat_test = cross_val.predict(self.X_test)
+        """ training """
+        cross_val.fit(X_train, y_train)
 
-        # printing hyperparameters results
+        """ test """
+        Y_hat_test = cross_val.predict(X_test)
+
+        """ printing hyperparameters results """
         print('Best hyperparameters: ', cross_val.best_params_)
 
-    ########################################
-    ########## Metrix evaluation ###########
-    ########################################
-    def evaluation(self):
-        # printing GridSearchCV metrics
-        print('GridSearchCV metrics: \n', classification_report(self.y_test, self.Y_hat_test))
+        return Y_hat_test, cross_val.best_params_
 
-        # evaluating metrics
-        accuracy_score_val = accuracy_score(self.y_test, self.Y_hat_test)
-        balanced_score_val = balanced_accuracy_score(self.y_test, self.Y_hat_test)
-        precision_score_val = precision_score(self.y_test, self.Y_hat_test)
-        recall_score_val = recall_score(self.y_test, self.Y_hat_test)
-        f1_score_val = f1_score(self.y_test, self.Y_hat_test)
-        roc_curve_val = roc_auc_score(self.y_test, self.Y_hat_test)
+    def final_train_test_phase(self, X_train, y_train, X_test, y_test, best_params_set):
+        """
+        Final train & test phase
 
-        # creating evaluation dataframe image
-        score = [accuracy_score_val, balanced_score_val, precision_score_val, recall_score_val, f1_score_val,
-                 roc_curve_val]
-        dict = {'Evaluation': self.eval, 'Score on the test set': score}
-        df = pd.DataFrame(dict)
-        df = df.style.background_gradient(vmin=0.8, vmax=1.0)
-        dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize=30)
+        :param X_train: features dataset for model training
+        :param y_train: y dataset for model training
+        :param X_test: features dataset for test prediction
+        :param y_test: y dataset for prediction checking
+        :param best_params_set: hyperparameters set by @train_assessment
+        """
 
-        # printing metrics evaluations
+        Y_hat_test = self.final_train_test(X_train, y_train, X_test, best_params_set)
+        self.confusion_matrix(y_test, Y_hat_test, True)
+        self.evaluation(y_test, Y_hat_test, True)
+
+    def final_train_test(self, X_train, y_train, X_test, best_params_set):
+        """ preparing """
+        new_classifier = self.model_class(**best_params_set)
+
+        """ training """
+        new_classifier.fit(X_train, y_train)
+
+        """ test """
+        Y_hat_test = new_classifier.predict(X_test)
+
+        return Y_hat_test
+
+    def confusion_matrix(self, y_test, Y_hat_test, is_final_test):
+        """
+        Confusion matrix
+
+        :param y_test: y value of test part dataset
+        :param Y_hat_test: predicted y value for test part dataset
+        :param is_final_test: True if it's the final test, false if it's a development test
+        """
+
+        print('####### Confusion matrix ######')
+        cm = confusion_matrix(y_test, Y_hat_test)
+
+        """ results """
+        print("Non-epileptic classified as non-epileptic: ", cm[0, 0])
+        print("Non-epileptic classified as epileptic: ", cm[0, 1])
+        print("Epileptic classified as non-epileptic: ", cm[1, 0])
+        print("Epileptic classified as epileptic: ", cm[1, 1])
+
+        """ heatmap plot """
+        if is_final_test:
+            fig, ax = plt.subplots()
+            sns.heatmap(cm, ax=ax, annot=True, cmap=plt.cm.Reds, fmt='d',
+                        xticklabels=['Truly non-epileptic', 'Truly epileptic'],
+                        yticklabels=['Predicted non-epileptic', 'Predicted epileptic'])
+            plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
+
+    def evaluation(self, y_test, Y_hat_test, is_final_test):
+        """
+        Metrix evaluation
+
+        :param y_test: y value of test part dataset
+        :param Y_hat_test: predicted y value for test part dataset
+        :param is_final_test: True if it's the final test, false if it's a development test
+        """
+
+        """ printing metrics results """
+        print('Final metrics: \n', classification_report(y_test, Y_hat_test))
+
+        """ evaluating metrics """
+        accuracy_score_val = accuracy_score(y_test, Y_hat_test)
+        balanced_score_val = balanced_accuracy_score(y_test, Y_hat_test)
+        precision_score_val = precision_score(y_test, Y_hat_test)
+        recall_score_val = recall_score(y_test, Y_hat_test)
+        f1_score_val = f1_score(y_test, Y_hat_test)
+        roc_curve_val = roc_auc_score(y_test, Y_hat_test)
+
+        """ creating evaluation dataframe image """
+        if is_final_test:
+            score = [accuracy_score_val, balanced_score_val, precision_score_val, recall_score_val, f1_score_val,
+                     roc_curve_val]
+            dict = {'Evaluation': self.eval, 'Score on the test set': score}
+            df = pd.DataFrame(dict)
+            df = df.style.background_gradient(vmin=0.8, vmax=1.0)
+            dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize=30)
+
+        """ printing metrics evaluations """
         print("Accuracy score on the test set: ", accuracy_score_val)
         print("Balanced Accuracy score on the test set: ", balanced_score_val)
         print("Precision Score on the test set: ", precision_score_val)
@@ -98,42 +142,22 @@ class AbstractMl(object):
         print("F1 score on the test set: ", f1_score_val)
         print("ROC curve score on the test set: ", roc_curve_val, "\n")
 
-        # adding to total dataframe
-        self.total_df[self.eval_name] = score
-        if (self.is_last):
-            self.total_df = self.total_df.style.background_gradient(vmin=0.8, vmax=1.0)
-            dfi.export(self.total_df, '..\\outputImg\\evaluation\\total_ml.png', fontsize=30)
+    def create_pmml(self, X, y, best_params_):
+        """
+        .pmml creation
 
-    #################################
-    ########## Evaluation ###########
-    #################################
-    def confusion_matrix(self):
-        print('### Results with best hyperparameters ###')
+        :param X: features value to create .pmml
+        :param y: output value to create .pmml
+        :param best_params_: hyperparameters set by @train_assessment
 
-        cm = confusion_matrix(self.y_test, self.Y_hat_test)
+        ----- NEEDS TO DOWNGRADE sklearn TO 1.2.2!! -----
+        """
 
-        # results
-        print("Non-epileptic classified as non-epileptic: ", cm[0, 0])
-        print("Non-epileptic classified as epileptic: ", cm[0, 1])
-        print("Epileptic classified as non-epileptic: ", cm[1, 0])
-        print("Epileptic classified as epileptic: ", cm[1, 1])
+        """ preparing """
+        pipeline = PMMLPipeline([("classifier", self.model_class(**best_params_))])
 
-        # heatmap plot
-        fig, ax = plt.subplots()
-        sns.heatmap(cm, ax=ax, annot=True, cmap=plt.cm.Reds, fmt='d', xticklabels=['Non-epileptic', 'Epileptic'],
-                    yticklabels=['Non-epileptic', 'Epileptic'])
-        plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
-
-    #################################
-    ######### PMML CREATION #########
-    #################################
-    ###### NEEDS TO DOWNGRADE sklearn TO 1.2.2!! ######
-    def create_pmml(self, X, y):
-        # preparing
-        pipeline = PMMLPipeline([("classifier", self.model_class(**self.grid_pmml))])
-
-        # training
+        """ training """
         pipeline.fit(X, y)
 
-        # creating .pmml
+        """ creating .pmml """
         sklearn2pmml(pipeline, "..\\pmml\\" + self.restr_name + ".pmml")

@@ -1,22 +1,18 @@
 from sklearn.neural_network import MLPClassifier
-from ml_models.abstract_ml import AbstractMl
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import abstract_ml
 
 
-class NeuralNetwork(AbstractMl):
+class NeuralNetwork(abstract_ml.AbstractMl):
 
-    def __init__(self, X_train, X_test, y_train, y_test, is_last):
-        self.model_name = "Neural Network"
-        self.eval_name = "Neural Network"
-        self.model_class = MLPClassifier
-        self.grid = {
-            'hidden_layer_sizes': [(178, 178, 178), (300, 300, 300)],  # Testing with different n° of layers and neurons
-            'activation': ['relu', 'tanh'],  # Testing different activation functions
-            'max_iter': [1000, 100000]  # Maximum iterations
+    def __init__(self, is_last):
+        model_name = "Neural Network"
+        model_class = MLPClassifier
+        test_grid = {
+            'hidden_layer_sizes': [(178, 178, 178), (300, 300, 300)],  # N° of layers and neurons
+            'activation': ['relu', 'tanh'],                            # Activation functions
+            'max_iter': [1000, 100000]                                 # Maximum iterations
         }
-        self.grid_pmml = {
-            'hidden_layer_sizes': (300, 300, 300),  # Testing with different n° of layers and neurons
-            'activation': 'relu',  # Testing different activation functions
-            'max_iter': 100000  # Maximum iterations
-
-        }
-        super().__init__(X_train, X_test, y_train, y_test, is_last)
+        super().__init__(is_last, model_name, test_grid, model_class)
