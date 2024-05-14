@@ -43,8 +43,8 @@ def create_heatmap(dataframe: pd.DataFrame):
     heatmap_data = dataframe.iloc[:, 0:178]
 
     """ creating heatmap """
-    sns.heatmap(heatmap_data.corr())
-    plt.title("Heatmap")
+    sns.heatmap(heatmap_data.corr(), cmap=sns.color_palette("Blues_d", as_cmap=True))
+    plt.gcf().set_facecolor('none')
     print_save_plots("basic\\eeg_heatmap", False)
 
 
@@ -94,9 +94,9 @@ def create_frequency_plot(dataframe: pd.DataFrame):
 
     frequency_df = create_df_frequency(dataframe)
     folder_name = 'freq'
-    create_cat_plot(frequency_df, 'y', 'freq', 'Frequence values (Hz)', None, folder_name)
-    create_kde(frequency_df, 'freq', 'y', 'Frequence values (Hz)', None, folder_name)
-    create_rel_plot(frequency_df, 'id', 'freq', 'y', 'Frequence values (Hz)', None, None, 1, folder_name)
+    create_cat_plot(frequency_df, 'y', 'freq', 'Frequency values (Hz)', None, folder_name)
+    create_kde(frequency_df, 'freq', 'y', 'Frequency values (Hz)', None, folder_name)
+    create_rel_plot(frequency_df, 'id', 'freq', 'y', 'Frequency values (Hz)', None, None, 1, folder_name)
 
 
 
@@ -122,21 +122,21 @@ def create_df_potential(input_data: pd.DataFrame):
 
 
 def create_df_frequency(input_data: pd.DataFrame):
-    df_frequence_prepare = input_data.iloc[:, 0:178]
+    df_frequency_prepare = input_data.iloc[:, 0:178]
 
     """ max """
-    df_frequence_prepare['max_number'] = 0
+    df_frequency_prepare['max_number'] = 0
     for count in range(2, 178):
-        df_frequence_prepare.loc[(input_data["X" + str(count - 1)] < input_data["X" + str(count)]) &
+        df_frequency_prepare.loc[(input_data["X" + str(count - 1)] < input_data["X" + str(count)]) &
                                  (input_data["X" + str(count)] > input_data["X" + str(count + 1)]),
-        "max_number"] = df_frequence_prepare['max_number'] + 1
-    df_frequence_prepare['freq'] = df_frequence_prepare['max_number'] / 1.02
+        "max_number"] = df_frequency_prepare['max_number'] + 1
+    df_frequency_prepare['freq'] = df_frequency_prepare['max_number'] / 1.02
 
     """ id & y """
-    df_frequence_prepare['id'] = df_frequence_prepare.index + 1
-    df_frequence_prepare['y'] = input_data['y']
-    df_frequence_prepare = df_frequence_prepare[['id', 'freq', 'y']]
-    return df_frequence_prepare
+    df_frequency_prepare['id'] = df_frequency_prepare.index + 1
+    df_frequency_prepare['y'] = input_data['y']
+    df_frequency_prepare = df_frequency_prepare[['id', 'freq', 'y']]
+    return df_frequency_prepare
 
 
 
@@ -153,8 +153,10 @@ def create_cat_plot(df: pd.DataFrame, x: str, y: str, title: str, col: str, fold
         col=col
     )
     cat.set_ylabels(title, clear_inner=False)
+    cat.set_xlabels("")
     cat.fig.subplots_adjust(top=.9)
-    cat.fig.suptitle("Categorical plot - " + title)
+    cat.fig.suptitle("Categorical box plot - " + title)
+    cat.fig.set_facecolor('none')
     print_save_plots(folder_name + "\\cat_plot", False)
 
 
@@ -164,10 +166,21 @@ def create_kde(df: pd.DataFrame, x: str, hue: str, title: str, col: str, folder_
         kind='kde',
         x=x,
         hue=hue,
-        col=col
+        col=col,
+        fill=True
     )
+    for ax in dist.axes.flat:
+        for collect in [0, 1]:
+            kde_data = ax.collections[collect].get_paths()[0].vertices
+            kde_x, kde_y = kde_data[:, 0], kde_data[:, 1]
+            max_density_index = np.argmax(kde_y)
+            max_density_x = kde_x[max_density_index]
+            ax.axvline(x=max_density_x, color='orange' if collect == 0 else 'blue')
+
     dist.fig.subplots_adjust(top=.9)
+    dist.set_ylabels("Probability density")
     dist.fig.suptitle("Kernel Density Estimate - " + title)
+    dist.fig.set_facecolor('none')
     dist.set_xlabels(title, clear_inner=False)
     print_save_plots(folder_name + "\\kde_plot", False)
 
@@ -187,6 +200,7 @@ def create_rel_plot(df: pd.DataFrame, x: str, y: str, col: str, title: str, hue:
     ret.fig.subplots_adjust(top=.9)
     ret.fig.suptitle("Relational plot - " + title)
     ret.set(xticklabels=[])
+    ret.fig.set_facecolor('none')
     if axline_numb == 2:
         axes = ret.axes.flat[0]
         axes.axhline(df[(df[col] == 'Non-epileptic') & (df[hue] == 'min')][y].mean(), ls='--', linewidth=2, color='red')

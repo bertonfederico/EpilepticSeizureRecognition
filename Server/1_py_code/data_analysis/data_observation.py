@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,7 +8,7 @@ def observation(data: pd.DataFrame):
     sns.set_style("whitegrid")
 
     """ Selecting n rows for each value of y """
-    n = 3
+    n = 10
     data_y_1 = data[data['y'] == 1][:n]
     data_y_2 = data[data['y'] == 2][:n]
     data_y_3 = data[data['y'] == 3][:n]
@@ -17,26 +18,36 @@ def observation(data: pd.DataFrame):
 
     """ Creating a dataframe with one row for each value of X """
     df_divided_seizure_short = (samples_to_show
-                    .melt(id_vars=['y'], var_name='time_label', value_name='EEG', ignore_index=False)
-                    .reset_index()
-                    .rename(columns={'index': 'id'})
-                )
+                                .melt(id_vars=['y'], var_name='time_label', value_name='EEG', ignore_index=False)
+                                .reset_index()
+                                .rename(columns={'index': 'id'})
+                                )
 
     """ Getting time_index column from time_label """
-    df_divided_seizure_short['time_label'] = (df_divided_seizure_short['time_label'].str.translate(str.maketrans('', '', 'X')).astype(int))
+    df_divided_seizure_short['time_label'] = (
+        df_divided_seizure_short['time_label'].str.translate(str.maketrans('', '', 'X')).astype(int))
 
     """ Creating and showing the graph """
+    subplot_names_mapping = {
+        1: 'Epileptic area in seizure activity',
+        2: 'Tumor area',
+        3: 'Healthy area in tumor brain',
+        4: 'Healthy brain - eyes closed',
+        5: 'Healthy brain - eyes open'
+    }
+    df_divided_seizure_short['subplot_name'] = df_divided_seizure_short['y'].map(subplot_names_mapping)
     g = sns.relplot(
         palette=sns.color_palette(n_colors=15),
         data=df_divided_seizure_short,
         kind='line',
         x='time_label',
         y='EEG',
-        col='y'
+        col='subplot_name'
     )
+    g.set_titles("{col_name}")
     g.fig.subplots_adjust(top=.9, left=.07)
-    g.fig.suptitle("y differences")
     g.fig.set_size_inches(13, 5)
+    g.fig.set_facecolor('none')
     plt.legend([], [], frameon=False)
     plt.savefig('..\\outputImg\\y_inspection\\y_differences.png')
     plt.show()
@@ -47,10 +58,12 @@ def observation(data: pd.DataFrame):
     data_y_3 = data[data['y'] == 3]
     data_y_4 = data[data['y'] == 4]
     data_y_5 = data[data['y'] == 5]
-    labels = 'y = 1', 'y = 2', 'y = 3', 'y = 4', 'y = 5'
+    labels = ('Epileptic area\nin seizure activity', 'Tumor area', 'Healthy area\nin tumor brain',
+              'Healthy brain\n- eyes closed', 'Healthy brain\n- eyes open')
+    colors = plt.cm.Blues(np.linspace(0.2, 0.7, len(labels)))
     sizes = [len(data_y_1.index), len(data_y_2.index), len(data_y_3.index), len(data_y_4.index), len(data_y_5.index)]
     fig, ax = plt.subplots()
-    ax.pie(sizes, labels=labels, autopct='%1.1f%%')
-    fig.suptitle("Number of rows for each value of y")
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
+    fig.set_facecolor('none')
     plt.savefig('..\\outputImg\\y_inspection\\row_number.png')
     plt.show()

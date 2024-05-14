@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, roc_auc_score
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, \
+    roc_auc_score
 from sklearn.model_selection import GridSearchCV
 from sklearn2pmml import sklearn2pmml
 from sklearn2pmml.pipeline import PMMLPipeline
@@ -109,6 +110,7 @@ class AbstractMl(object):
             sns.heatmap(cm, ax=ax, annot=True, cmap=plt.cm.Reds, fmt='d',
                         xticklabels=['Truly non-epileptic', 'Truly epileptic'],
                         yticklabels=['Predicted non-epileptic', 'Predicted epileptic'])
+            ax.set_facecolor('none')
             plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
 
     def evaluation(self, y_test: np.ndarray, Y_hat_test: np.ndarray, is_final_test: bool, test_type: str):

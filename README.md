@@ -163,7 +163,7 @@ To analyze how the EEGs used extend, and to visualize the difference
 between epileptic and nonepileptic electrical activity, relational,
 distribution and categorical plot can be created regarding the
 ***minimum/maximum/mean*** or ***Standard Deviation*** potential and
-frequence of neurological beats.
+frequency of neurological beats.
 
 Let\'s analyze the potential of EEG records; now we start by calculating
 the minimum and maximum values:
@@ -304,12 +304,12 @@ minimum values of the sine wave-like trend. Since choosing the analysis
 by the minimum or maximum values does not result in any difference,
 let\'s try to perform it on the maximum values:
 ``` python
-df_frequence_prepare = data_exploratory.iloc[:, 0:178]
-df_frequence_prepare['max_number'] = 0
+df_frequency_prepare = data_exploratory.iloc[:, 0:178]
+df_frequency_prepare['max_number'] = 0
 for count in range(2,178):
-    df_frequence_prepare.loc[(data_exploratory["X"+str(count-1)] < data_exploratory["X"+str(count)]) &
+    df_frequency_prepare.loc[(data_exploratory["X"+str(count-1)] < data_exploratory["X"+str(count)]) &
                              (data_exploratory["X"+str(count)] > data_exploratory["X"+str(count+1)]),
-                    "max_number"] = df_frequence_prepare['max_number'] + 1
+                    "max_number"] = df_frequency_prepare['max_number'] + 1
 ```
 
 We now search for the maximum and minimum values for each EEG line and
@@ -320,34 +320,34 @@ Let\'s now try to compare the frequency of epileptic and nonepileptic
 EEGs; we visualize it in categorical plot, distribution plot, and
 relational plot:
 ``` python
-# frequence calculation
-df_frequence_mean = pd.DataFrame()
-df_frequence_mean['Freq'] = df_frequence_prepare['max_number']/1.02
-df_frequence_mean['id'] = data_exploratory.index + 1
-df_frequence_mean['y'] = data_exploratory['y']
+# frequency calculation
+df_frequency_mean = pd.DataFrame()
+df_frequency_mean['Freq'] = df_frequency_prepare['max_number']/1.02
+df_frequency_mean['id'] = data_exploratory.index + 1
+df_frequency_mean['y'] = data_exploratory['y']
 
 
 # categorical plot
 cat = sns.catplot(
-    data=df_frequence_mean,
+    data=df_frequency_mean,
     kind='boxen',
     x='y',
     y='Freq'
 )
 cat.set_ylabels('Frequence values (Hz)', clear_inner=False)
 cat.fig.subplots_adjust(top=.9)
-cat.fig.suptitle("Categorical plot - frequence values")
+cat.fig.suptitle("Categorical plot - frequency values")
 
 
 # distribution plot with Kernel Density Estimation
 dist = sns.displot(
-    data=df_frequence_mean,
+    data=df_frequency_mean,
     kind='kde',
     x='Freq',
     hue='y',
 )
 dist.fig.subplots_adjust(top=.9)
-dist.fig.suptitle("Kernel Density Estimate - frequence values")
+dist.fig.suptitle("Kernel Density Estimate - frequency values")
 dist.set_xlabels('Frequence values (Hz)', clear_inner=False)
 
 

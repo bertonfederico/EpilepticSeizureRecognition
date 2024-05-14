@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  background-image: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("../res/background.webp");
+  background-image: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("../res/backgr_photo.png");
   background-size:cover;
   background-repeat: no-repeat;
 }

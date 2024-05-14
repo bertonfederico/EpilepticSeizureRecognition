@@ -15,8 +15,8 @@
         <div class="mySlides fade">
             <div class="centeredDiv">
                 <select onchange="showCharts(this.value, 'dataObservation')" required>
-                    <option value="../Server/outputImg/y_inspection/y_differences.png">Standard deviation</option>
-                    <option value="../Server/outputImg/y_inspection/row_number.png">Kernel Density Estimate</option>
+                    <option value="../Server/outputImg/y_inspection/y_differences.png">Amplitude values</option>
+                    <option value="../Server/outputImg/y_inspection/row_number.png">Samples percentage</option>
                 </select>
             </div>
             <div class="myInnerSlides fade centeredDiv">
@@ -26,16 +26,16 @@
         <div class="mySlides fade">
             <div class="centeredDiv">
                 <select onchange="showCharts(this.value, 'dataAnalisys')" required>
-                    <option value="../Server/outputImg/basic/eeg_heatmap.png">Heatmap</option>
-                    <option value="../Server/outputImg/pot_min_max/cat_plot.png">Min/max potential - categorical plot</option>
+                    <option value="../Server/outputImg/basic/eeg_heatmap.png">Correlation matrix</option>
+                    <option value="../Server/outputImg/pot_min_max/cat_plot.png">Min/max potential - categorical box plot</option>
                     <option value="../Server/outputImg/pot_min_max/kde_plot.png">Min/max potential - kernel density estimation</option>
                     <option value="../Server/outputImg/pot_min_max/rel_plot.png">Min/max potential - relational plot</option>
-                    <option value="../Server/outputImg/pot_std/cat_plot.png">Standard deviation potential - categorical plot</option>
+                    <option value="../Server/outputImg/pot_std/cat_plot.png">Standard deviation potential - categorical box plot</option>
                     <option value="../Server/outputImg/pot_std/kde_plot.png">Standard deviation potential - kernel density estimation</option>
                     <option value="../Server/outputImg/pot_std/rel_plot.png">Standard deviation potential - relational plot</option>
-                    <option value="../Server/outputImg/freq/cat_plot.png">Mean frequnce - categorical plot</option>
-                    <option value="../Server/outputImg/freq/kde_plot.png">Mean frequnce - kernel density estimation</option>
-                    <option value="../Server/outputImg/freq/rel_plot.png">Mean frequnce - relational plot</option>
+                    <option value="../Server/outputImg/freq/cat_plot.png">Mean frequency - categorical box plot</option>
+                    <option value="../Server/outputImg/freq/kde_plot.png">Mean frequency - kernel density estimation</option>
+                    <option value="../Server/outputImg/freq/rel_plot.png">Mean frequency - relational plot</option>
                 </select>
             </div>
             <div class="myInnerSlides fade centeredDiv">
@@ -43,15 +43,8 @@
             </div>
         </div>
         <div class="mySlides fade">
-            <div class="myInnerSlides fade centeredDiv">
-                <img id="dataAnalisys" width="95%" src="../Server/outputImg/evaluation/total_ml.png">
-            </div>
-        </div>
-        <div class="mySlides fade">
             <div class="centeredDiv">
                 <select onchange="showChartsML(this.value)" required>
-                    <option value="LogisticRegression">Logistic Regression</option>
-                    <option value="DecisionTreeClassifier">Decision Tree Regressor</option>
                     <option value="SupportVectorClassification">Support Vector Classification</option>
                     <option value="NeuralNetwork">Neural Network</option>
                 </select>
@@ -87,7 +80,6 @@
         <span class="dot" onclick="currentSlide(1)"></span>
         <span class="dot" onclick="currentSlide(2)"></span>
         <span class="dot" onclick="currentSlide(3)"></span>
-        <span class="dot" onclick="currentSlide(4)"></span>
     </div>
 
     <script src="js/controller.js"></script>
