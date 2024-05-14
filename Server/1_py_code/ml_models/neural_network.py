@@ -7,7 +7,7 @@ import abstract_ml
 
 class NeuralNetwork(abstract_ml.AbstractMl):
 
-    def __init__(self, is_last):
+    def __init__(self, is_last: bool):
         model_name = "Neural Network"
         model_class = MLPClassifier
         test_grid = {

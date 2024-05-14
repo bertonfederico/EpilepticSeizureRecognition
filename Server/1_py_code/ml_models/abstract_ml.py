@@ -1,5 +1,8 @@
+from typing import Type, Dict, Any
+
 import dataframe_image as dfi
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, roc_auc_score
@@ -11,7 +14,7 @@ from sklearn2pmml.pipeline import PMMLPipeline
 
 class AbstractMl(object):
 
-    def __init__(self, is_last, model_name, test_grid, model_class):
+    def __init__(self, is_last: bool, model_name: str, test_grid: dict, model_class: Type):
         print('\n\n################################# ' + model_name + ' #################################')
         self.is_last_ml_algorithm = is_last
         self.restr_name = model_name.replace(" ", "")
@@ -21,7 +24,8 @@ class AbstractMl(object):
         dictionary = {'Evaluation': self.eval}
         self.total_df = pd.DataFrame(dictionary)
 
-    def train_assessment_phase(self, X_train, y_train, X_development, y_development):
+    def train_assessment_phase(self, X_train: np.ndarray, y_train: np.ndarray,
+                               X_development: np.ndarray, y_development: np.ndarray):
         """
         Train & test phase for hyperparameters
 
@@ -32,12 +36,12 @@ class AbstractMl(object):
         :return: best_params_
         """
 
-        Y_hat_test, best_params_ = self.train_assessment(X_train, y_train, X_development, y_development)
+        Y_hat_test, best_params_ = self.train_assessment(X_train, y_train, X_development)
         self.confusion_matrix(y_development, Y_hat_test, False)
         self.evaluation(y_development, Y_hat_test, False)
         return best_params_
 
-    def train_assessment(self, X_train, y_train, X_test, y_test):
+    def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray):
         """ preparing """
         cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7, verbose=10)
 
@@ -52,7 +56,8 @@ class AbstractMl(object):
 
         return Y_hat_test, cross_val.best_params_
 
-    def final_train_test_phase(self, X_train, y_train, X_test, y_test, best_params_set):
+    def final_train_test_phase(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray,
+                               y_test: np.ndarray, best_params_set: Dict[str, Any]):
         """
         Final train & test phase
 
@@ -67,7 +72,8 @@ class AbstractMl(object):
         self.confusion_matrix(y_test, Y_hat_test, True)
         self.evaluation(y_test, Y_hat_test, True)
 
-    def final_train_test(self, X_train, y_train, X_test, best_params_set):
+    def final_train_test(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray,
+                         best_params_set: Dict[str, Any]):
         """ preparing """
         new_classifier = self.model_class(**best_params_set)
 
@@ -79,7 +85,7 @@ class AbstractMl(object):
 
         return Y_hat_test
 
-    def confusion_matrix(self, y_test, Y_hat_test, is_final_test):
+    def confusion_matrix(self, y_test: np.ndarray, Y_hat_test: np.ndarray, is_final_test: bool):
         """
         Confusion matrix
 
@@ -105,7 +111,7 @@ class AbstractMl(object):
                         yticklabels=['Predicted non-epileptic', 'Predicted epileptic'])
             plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
 
-    def evaluation(self, y_test, Y_hat_test, is_final_test):
+    def evaluation(self, y_test: np.ndarray, Y_hat_test: np.ndarray, is_final_test: bool):
         """
         Metrix evaluation
 
@@ -142,7 +148,7 @@ class AbstractMl(object):
         print("F1 score on the test set: ", f1_score_val)
         print("ROC curve score on the test set: ", roc_curve_val, "\n")
 
-    def create_pmml(self, X, y, best_params_):
+    def create_pmml(self, X: np.ndarray, y: np.ndarray, best_params_: Dict[str, Any]):
         """
         .pmml creation
 

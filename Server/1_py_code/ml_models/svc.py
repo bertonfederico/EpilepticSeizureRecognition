@@ -8,7 +8,7 @@ import abstract_ml
 
 class Svc(abstract_ml.AbstractMl):
 
-    def __init__(self, is_last):
+    def __init__(self, is_last: bool):
         model_name = "Support Vector Classification"
         model_class = SVC
         test_grid = {

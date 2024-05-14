@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 import warnings
@@ -8,46 +9,62 @@ warnings.filterwarnings("ignore", "is_categorical_dtype")
 warnings.filterwarnings("ignore", "use_inf_as_na")
 
 
-################################
-############# Main #############
-################################
-def create_plots(input_data):
+def create_plots(input_data: pd.DataFrame):
+    """
+    Creates all plots
+    :param input_data: EEG dataset
+    """
+
     data_exploratory = input_data.copy()
     data_exploratory['y'] = np.where(data_exploratory['y'] == 1, 'Epileptic', 'Non-epileptic')
 
-    # heatmap
+    """ heatmap """
     create_heatmap(data_exploratory)
 
-    # potential
-    create_pontential_plot(data_exploratory)
+    """ potential """
+    create_potential_plot(data_exploratory)
 
-    # frequence
-    create_frequence_plot(data_exploratory)
+    """ frequency """
+    create_frequency_plot(data_exploratory)
 
 
-#################################
-### Exploratory Data Analysis ###
-#################################
-# Heatmap
-def create_heatmap(dataframe):
-    # removing y values
+
+
+""""""""""""""""""""""""""""""""""""
+"""   Exploratory Data Analysis  """
+""""""""""""""""""""""""""""""""""""
+def create_heatmap(dataframe: pd.DataFrame):
+    """
+    Heatmap creation
+    :param dataframe: EEG dataset
+    """
+
+    """ removing y values """
     heatmap_data = dataframe.iloc[:, 0:178]
 
-    # creating heatmap
+    """ creating heatmap """
     sns.heatmap(heatmap_data.corr())
     plt.title("Heatmap")
     print_save_plots("basic\\eeg_heatmap", False)
 
 
-# Potential plots
-def create_pontential_plot(input_data):
-    potential_df = create_df_potential(input_data)
-    create_min_max_pontential_plot(potential_df[['id', 'min', 'max', 'y']])
-    create_std_pontential_plot(potential_df[['id', 'std', 'y']])
+def create_potential_plot(dataframe: pd.DataFrame):
+    """
+    Potential plots creation
+    :param dataframe: EEG dataset
+    """
+
+    potential_df = create_df_potential(dataframe)
+    create_min_max_potential_plot(potential_df[['id', 'min', 'max', 'y']])
+    create_std_potential_plot(potential_df[['id', 'std', 'y']])
 
 
-# Min/max potential plots
-def create_min_max_pontential_plot(potential_df):
+def create_min_max_potential_plot(potential_df: pd.DataFrame):
+    """
+    Min/max potential plots
+    :param potential_df: input dataframe
+    """
+
     df_potential_min_max = (
         potential_df.melt(id_vars=['id', 'y'], var_name='Value type', value_name='value', ignore_index=True))
     folder_name = 'pot_min_max'
@@ -57,48 +74,57 @@ def create_min_max_pontential_plot(potential_df):
                     folder_name)
 
 
-# Std potential plots
-def create_std_pontential_plot(potential_df):
+def create_std_potential_plot(potential_df: pd.DataFrame):
+    """
+    Std potential plots
+    :param potential_df: input dataframe
+    """
+
     folder_name = 'pot_std'
     create_cat_plot(potential_df, 'y', 'std', 'Potential values (μV)', None, folder_name)
     create_kde(potential_df, 'std', 'y', 'Potential values (μV)', None, folder_name)
     create_rel_plot(potential_df, 'id', 'std', 'y', 'Potential values (μV)', None, None, 0, folder_name)
 
 
-# Frequence plots
-def create_frequence_plot(input_data):
-    frequence_df = create_df_frequence(input_data)
+def create_frequency_plot(dataframe: pd.DataFrame):
+    """
+    Frequency plots
+    :param dataframe: input dataframe
+    """
+
+    frequency_df = create_df_frequency(dataframe)
     folder_name = 'freq'
-    create_cat_plot(frequence_df, 'y', 'freq', 'Frequence values (Hz)', None, folder_name)
-    create_kde(frequence_df, 'freq', 'y', 'Frequence values (Hz)', None, folder_name)
-    create_rel_plot(frequence_df, 'id', 'freq', 'y', 'Frequence values (Hz)', None, None, 1, folder_name)
+    create_cat_plot(frequency_df, 'y', 'freq', 'Frequence values (Hz)', None, folder_name)
+    create_kde(frequency_df, 'freq', 'y', 'Frequence values (Hz)', None, folder_name)
+    create_rel_plot(frequency_df, 'id', 'freq', 'y', 'Frequence values (Hz)', None, None, 1, folder_name)
 
 
 
-################################
-####### Prepare methods ########
-################################
-def create_df_potential(input_data):
+
+""""""""""""""""""""""""""""""""""""
+"""        Prepare methods       """
+""""""""""""""""""""""""""""""""""""
+def create_df_potential(input_data: pd.DataFrame):
     df_potential_prepare = input_data.iloc[:, 0:178]
 
-    # std
+    """ std """
     df_potential_prepare = df_potential_prepare.std(axis=1).reset_index()
     df_potential_prepare.rename(columns={0: "std"}, inplace=True)
 
-    # extreme min/max
+    """ extreme min/max """
     df_potential_prepare['min'] = input_data.min(axis=1, numeric_only=True)
     df_potential_prepare['max'] = input_data.max(axis=1, numeric_only=True)
 
-    # id & y
+    """ id & y """
     df_potential_prepare['id'] = df_potential_prepare.index + 1
     df_potential_prepare['y'] = input_data['y']
     return df_potential_prepare
 
 
-def create_df_frequence(input_data):
+def create_df_frequency(input_data: pd.DataFrame):
     df_frequence_prepare = input_data.iloc[:, 0:178]
 
-    # max
+    """ max """
     df_frequence_prepare['max_number'] = 0
     for count in range(2, 178):
         df_frequence_prepare.loc[(input_data["X" + str(count - 1)] < input_data["X" + str(count)]) &
@@ -106,7 +132,7 @@ def create_df_frequence(input_data):
         "max_number"] = df_frequence_prepare['max_number'] + 1
     df_frequence_prepare['freq'] = df_frequence_prepare['max_number'] / 1.02
 
-    # id & y
+    """ id & y """
     df_frequence_prepare['id'] = df_frequence_prepare.index + 1
     df_frequence_prepare['y'] = input_data['y']
     df_frequence_prepare = df_frequence_prepare[['id', 'freq', 'y']]
@@ -114,10 +140,11 @@ def create_df_frequence(input_data):
 
 
 
-################################
-######### Plot methods #########
-################################
-def create_cat_plot(df, x, y, title, col, folder_name):
+
+""""""""""""""""""""""""""""""""""""
+"""          Plot methods        """
+""""""""""""""""""""""""""""""""""""
+def create_cat_plot(df: pd.DataFrame, x: str, y: str, title: str, col: str, folder_name: str):
     cat = sns.catplot(
         data=df,
         kind='boxen',
@@ -131,7 +158,7 @@ def create_cat_plot(df, x, y, title, col, folder_name):
     print_save_plots(folder_name + "\\cat_plot", False)
 
 
-def create_kde(df, x, hue, title, col, folder_name):
+def create_kde(df: pd.DataFrame, x: str, hue: str, title: str, col: str, folder_name: str):
     dist = sns.displot(
         data=df,
         kind='kde',
@@ -145,7 +172,7 @@ def create_kde(df, x, hue, title, col, folder_name):
     print_save_plots(folder_name + "\\kde_plot", False)
 
 
-def create_rel_plot(df, x, y, col, title, hue, style, axline_numb, folder_name):
+def create_rel_plot(df: pd.DataFrame, x: str, y: str, col: str, title: str, hue: str, style: str, axline_numb: int, folder_name: str):
     ret = sns.relplot(
         data=df,
         x=x,
@@ -175,7 +202,7 @@ def create_rel_plot(df, x, y, col, title, hue, style, axline_numb, folder_name):
     print_save_plots(folder_name + "\\rel_plot", False)
 
 
-def print_save_plots(name, remove_legend):
+def print_save_plots(name: str, remove_legend: bool):
     if (remove_legend): plt.legend([], [], frameon=False)
     plt.savefig('..\\outputImg\\' + name + '.png')
     plt.show()
