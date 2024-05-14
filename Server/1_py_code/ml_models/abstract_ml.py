@@ -38,7 +38,7 @@ class AbstractMl(object):
 
         Y_hat_test, best_params_ = self.train_assessment(X_train, y_train, X_development)
         self.confusion_matrix(y_development, Y_hat_test, False)
-        self.evaluation(y_development, Y_hat_test, False)
+        self.evaluation(y_development, Y_hat_test, False, "development")
         return best_params_
 
     def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray):
@@ -70,7 +70,7 @@ class AbstractMl(object):
 
         Y_hat_test = self.final_train_test(X_train, y_train, X_test, best_params_set)
         self.confusion_matrix(y_test, Y_hat_test, True)
-        self.evaluation(y_test, Y_hat_test, True)
+        self.evaluation(y_test, Y_hat_test, True, "final")
 
     def final_train_test(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray,
                          best_params_set: Dict[str, Any]):
@@ -111,17 +111,15 @@ class AbstractMl(object):
                         yticklabels=['Predicted non-epileptic', 'Predicted epileptic'])
             plt.savefig('..\\outputImg\\confusion_matrix\\' + self.restr_name + '.png')
 
-    def evaluation(self, y_test: np.ndarray, Y_hat_test: np.ndarray, is_final_test: bool):
+    def evaluation(self, y_test: np.ndarray, Y_hat_test: np.ndarray, is_final_test: bool, test_type: str):
         """
         Metrix evaluation
 
         :param y_test: y value of test part dataset
         :param Y_hat_test: predicted y value for test part dataset
         :param is_final_test: True if it's the final test, false if it's a development test
+        :param test_type: string indicating development test or final test
         """
-
-        """ printing metrics results """
-        print('Final metrics: \n', classification_report(y_test, Y_hat_test))
 
         """ evaluating metrics """
         accuracy_score_val = accuracy_score(y_test, Y_hat_test)
@@ -141,12 +139,12 @@ class AbstractMl(object):
             dfi.export(df, '..\\outputImg\\evaluation\\' + self.restr_name + '.png', fontsize=30)
 
         """ printing metrics evaluations """
-        print("Accuracy score on the test set: ", accuracy_score_val)
-        print("Balanced Accuracy score on the test set: ", balanced_score_val)
-        print("Precision Score on the test set: ", precision_score_val)
-        print("Recall score on the test set: ", recall_score_val)
-        print("F1 score on the test set: ", f1_score_val)
-        print("ROC curve score on the test set: ", roc_curve_val, "\n")
+        print("Accuracy score on the " + test_type + " test set: ", accuracy_score_val)
+        print("Balanced Accuracy score on the " + test_type + " test set: ", balanced_score_val)
+        print("Precision Score on the " + test_type + " test set: ", precision_score_val)
+        print("Recall score on the " + test_type + " test set: ", recall_score_val)
+        print("F1 score on the " + test_type + " test set: ", f1_score_val)
+        print("ROC curve score on the " + test_type + " test set: ", roc_curve_val, "\n")
 
     def create_pmml(self, X: np.ndarray, y: np.ndarray, best_params_: Dict[str, Any]):
         """
