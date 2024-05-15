@@ -9,6 +9,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, balanced_accuracy_score, \
     roc_auc_score
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
 from sklearn2pmml import sklearn2pmml
 from sklearn2pmml.pipeline import PMMLPipeline
 
@@ -184,7 +185,10 @@ class AbstractMl(object):
         """
 
         """ preparing """
-        pipeline = PMMLPipeline([("classifier", self.model_class(**best_params_))])
+        pipeline = PMMLPipeline([
+            ('scaler', StandardScaler()),
+            ("classifier", self.model_class(**best_params_)),
+        ])
 
         """ training """
         pipeline.fit(X, y)

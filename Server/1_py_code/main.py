@@ -89,4 +89,4 @@ X_test = sc.transform(X_test)
 for i, model in enumerate(ml_models):
     act_model = model(i == (len(ml_models) - 1))
     act_model.final_train_test_phase(X_train_dev, y_train_dev, X_test, y_test, best_params_list[i])
-    act_model.create_pmml(X_train_dev, y_train_dev, best_params_list[i])
+    act_model.create_pmml(X, y, best_params_list[i])
