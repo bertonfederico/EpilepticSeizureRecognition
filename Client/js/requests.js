@@ -34,9 +34,6 @@ function sendRequest(jsonReq) {
             const json = JSON.parse(xhr.responseText);
             const prediction = json.results.y === 0 ? "Non-epileptic" : "Epileptic";
             document.getElementById("prediction").innerHTML = "Model prediction: " + prediction;
-            let probability = json.results["probability(" + json.results.y + ")"];
-            probability = probability !== undefined ? ("Probability: " + ((probability*100).toFixed(2)) + "%") : "";
-            document.getElementById("probability").innerHTML =  probability;
         }
     }
     const data = JSON.stringify(jsonReq);

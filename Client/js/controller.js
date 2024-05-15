@@ -48,5 +48,4 @@ function showChartsML(imgPos, id) {
 			+ actualML + ".png", 'evaluation')
 	document.getElementById("csvFile").value = '';
 	document.getElementById("prediction").innerHTML = '';
-	document.getElementById("probability").innerHTML = '';
 }
