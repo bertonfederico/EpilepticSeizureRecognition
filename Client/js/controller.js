@@ -1,10 +1,12 @@
 // Controllers for slideshow
 var slideIndex = 1;
-var actualML = ""
+var actualML = 'SupportVectorClassification'
+var actualAssessmentFinal = "assessment_"
+var actualTrainTest = "train_"
 showSlides(slideIndex);
 showCharts('../Server/outputImg/y_inspection/y_differences.png', 'dataObservation')
 showCharts('../Server/outputImg/basic/eeg_heatmap.png', 'dataAnalisys')
-showChartsML('DecisionTreeClassifier')
+showChartsML('SupportVectorClassification', 1)
 
 function plusSlides(n) {
 	showSlides(slideIndex += n);
@@ -36,11 +38,15 @@ function showCharts(imgPos, imgIcon) {
 	document.getElementById(imgIcon).src = imgPos;
 }
 
-function showChartsML(imgPos) {
-	showCharts("../Server/outputImg/confusion_matrix/" + imgPos + ".png", 'confusion_matrix')
-	showCharts("../Server/outputImg/evaluation/" + imgPos + ".png", 'evaluation')
+function showChartsML(imgPos, id) {
+	if (id === 1) actualML = imgPos
+	else if (id === 2) actualAssessmentFinal = imgPos
+	else actualTrainTest = imgPos
+	showCharts("../Server/outputImg/confusion_matrix/" + actualAssessmentFinal + actualTrainTest
+			+ actualML + ".png", 'confusion_matrix')
+	showCharts("../Server/outputImg/evaluation/" + actualAssessmentFinal + actualTrainTest
+			+ actualML + ".png", 'evaluation')
 	document.getElementById("csvFile").value = '';
 	document.getElementById("prediction").innerHTML = '';
 	document.getElementById("probability").innerHTML = '';
-	actualML = imgPos
 }

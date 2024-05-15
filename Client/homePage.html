@@ -43,13 +43,26 @@
             </div>
         </div>
         <div class="mySlides fade">
-            <div class="centeredDiv">
-                <select onchange="showChartsML(this.value)" required>
+            <div style="display: grid; grid-template-columns: 10.5% 23% 5% 23% 5% 23% 10.5%" class="centeredDiv">
+                <div></div>
+                <select onchange="showChartsML(this.value, 1)" required>
                     <option value="SupportVectorClassification">Support Vector Classification</option>
                     <option value="NeuralNetwork">Neural Network</option>
                 </select>
+                <div></div>
+                <select onchange="showChartsML(this.value, 2)" required>
+                    <option value="assessment_">Assessment</option>
+                    <option value="final_">Final</option>
+                </select>
+                <div></div>
+                <select onchange="showChartsML(this.value, 3)" required>
+                    <option value="train_">Train</option>
+                    <option value="test_">Test</option>
+                </select>
+                <div></div>
             </div>
-            <div style="display: grid; grid-template-columns: 38% 38% 24%; justify-items: center;">
+            <div style="display: grid; grid-template-columns: 5% 32% 38% 20% 5%; justify-items: center;">
+                <div></div>
                 <div class="centeredDiv">
                     <h1 style="margin: 0px;"> Evaluation </h1><br>
                     <img id="evaluation" height="330" src="">
@@ -59,14 +72,15 @@
                     <img id="confusion_matrix" height="330" src="">
                 </div>
                 <div class="centeredDiv">
-                    <h1 style="margin: 0px;"> Prediction </h1><br>
-                    <div class="scrollbar_div">
+                    <h1 style="margin: 0;"> Prediction </h1><br>
+                    <div>
                         <input type="file" id="csvFile" accept=".csv" />
                         <button type="submit" id="submitBtn" onclick="getPrediction();">Predict</button><br>
                         <h3 id="prediction"></h3>
                         <h3 id="probability"></h3></div><br>
                     </div>
                 </div>
+                <div></div>
             </div>
         </div>
     </div>
