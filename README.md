@@ -100,7 +100,8 @@ plt.legend([], [], frameon=False)
 plt.show()
 ```
 
-<img src="./Server/outputImg/y_inspection/y_differences.png">
+![y_differences](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/48bb057b-7392-4af7-ad8a-6df678581876)
+
 
 It is possible to guess that epileptic EEGs manifest larger electrical
 activities in height (electrical potential) and width (frequency).
@@ -123,7 +124,8 @@ fig, ax = plt.subplots()
 ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
 plt.show()
 ```
-<img src="./Server/outputImg/y_inspection/row_number.png">
+![row_number](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/90836943-4bc9-417f-bde5-08cd9b1690c4)
+
 
 ## 🔧 Correction of y-values
 
@@ -155,7 +157,7 @@ heatmap_data = data_exploratory.iloc[:,0:178]
 sns.heatmap(heatmap_data.corr())
 plt.title("Heatmap")
 ```
-<img src="./Server/outputImg/basic/eeg_heatmap.png">
+![eeg_heatmap](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/cff58afb-13e1-49aa-af73-e94e1cc247df)
 
 ### EEG potential (*μV*): ***min, max & Standard Deviation*** {#eeg-potential-μv-min-max--standard-deviation}
 
@@ -229,9 +231,9 @@ axes = rel.axes.flat[1]
 axes.axhline(df_potential_min_max[(df_potential_min_max['y'] == 'Epileptic') & (df_potential_min_max['Value type'] == 'Min')]['value'].mean(), ls='--', linewidth=2, color='red')
 axes.axhline(df_potential_min_max[(df_potential_min_max['y'] == 'Epileptic') & (df_potential_min_max['Value type'] == 'Max')]['value'].mean(), ls='--', linewidth=2, color='red')
 ```
-<img src="./Server/outputImg/pot_min_max/cat_plot.png">
-<img src="./Server/outputImg/pot_min_max/kde_plot.png">
-<img src="./Server/outputImg/pot_min_max/rel_plot.png">
+![cat_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/ea003cbd-8bab-459e-8ebf-087e6f70fd5e)
+![kde_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/02825f6b-7b17-495b-894a-e62f5a7fbed8)
+![rel_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/2271bd6b-9467-4a7e-a901-9bfaae359760)
 
 Now let\'s try to analyze the difference between epileptic and
 non-epileptic EEG based on the Standard Deviation of the potential:
@@ -281,9 +283,9 @@ rel.fig.subplots_adjust(top=.9)
 rel.fig.suptitle("Relational plot - std potential values")
 rel.set(xticklabels=[])
 ```
-<img src="./Server/outputImg/pot_std/cat_plot.png">
-<img src="./Server/outputImg/pot_std/kde_plot.png">
-<img src="./Server/outputImg/pot_std/rel_plot.png">
+![cat_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/24267fb2-3fe4-4f50-8309-fd85c2698e17)
+![kde_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/ecb4bfb3-c0b9-4161-8365-ddaca738643e)
+![rel_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/aac89d1c-4dc5-4852-908e-d97fdb8916d2)
 
 It is evident how epileptic seizures are manifested in much larger EEGs
 from the point of view of electrical potential.
@@ -370,9 +372,9 @@ axes.axhline(df_frequence_mean[(df_frequence_mean['y'] == 'Non-epileptic')]['Fre
 axes = ret.axes.flat[1]
 axes.axhline(df_frequence_mean[(df_frequence_mean['y'] == 'Epileptic')]['Freq'].mean(), ls='--', linewidth=2, color='red')
 ```
-<img src="./Server/outputImg/freq/cat_plot.png">
-<img src="./Server/outputImg/freq/kde_plot.png">
-<img src="./Server/outputImg/freq/rel_plot.png">
+![cat_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/40dcc664-a582-4f3e-a676-f501fc4226e9)
+![kde_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/e01bf8fa-10d7-4cda-a3ad-3da5aa5599dd)
+![rel_plot](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/35a5ab5d-971d-4713-8689-f54dec6d25ca)
 
 As noted by the graphs regarding the width of the periods, we can also
 observe this more clearly from the frequency representations: the rhythm
@@ -448,8 +450,13 @@ y_hat_test  = cross_val.predict(X_test)
 """ best hyperparameters """
 best_params_ = cross_val.best_params_
 ```
-#### Metrics
-Now training and developement testing is over! Let\'s look at a generic classification report and scores to see if the chosen ML algorithm is suitable:
+
+This training determined which hyperparameters are best to use in this case, namely a number of layers equal to 3, each with a number of neurons equal to 300, and an activation of "relu" type. In addition, it was found that the maximum number of iterations that can be performed is preferable to set it at a number that is not too high (1000 or so).
+
+![image](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/54cddbda-5b30-44e6-ab8b-0ca89629b9a8)
+
+#### Metrics scores
+Now training and developement testing is over! Let\'s look at metrics scores to see if the chosen ML algorithm is suitable:
 ``` python
 from sklearn.metrics import f1_score, accuracy_score, cohen_kappa_score, jaccard_score, precision_score, recall_score, balanced_accuracy_score
 from sklearn.metrics import classification_report
@@ -469,20 +476,9 @@ print("Recall score on the development test set: ", recall_score_val)
 print("F1 score on the development test set: ", f1_score_val)
 print("ROC curve score on the development" test set: ", roc_curve_val)
 ```
+![assessment_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/a35a6af5-1012-43f9-a17e-ee70e700a531)
 
-    Model classification report with GridSearcg CV: 
-                   precision    recall  f1-score   support
-
-               0       0.98      0.99      0.98      1821
-               1       0.95      0.94      0.94       479
-
-        accuracy                           0.98      2300
-       macro avg       0.96      0.96      0.96      2300
-    weighted avg       0.98      0.98      0.98      2300
-
-<img src="./Server/outputImg/evaluation/NeuralNetwork.png">
-
-The test set scores are between 88% and 97%, so Neural Network is an excellent Machine Learning algorithm for classification of epileptic
+The test set scores are between 93% and 98%, so Neural Network is an excellent Machine Learning algorithm for classification of epileptic
 EEGs!
 
 #### Confusion matrix
@@ -494,9 +490,18 @@ from sklearn.metrics import confusion_matrix
 
 cm = confusion_matrix(y_test, y_hat_test)
 fig, ax = plt.subplots()
-sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabels = ['Non-epileptic', 'Epileptic'], yticklabels = ['Non-epileptic', 'Epileptic'])
+sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabels = ['Predicted non-epileptic', 'Predicted epileptic'], yticklabels = ['Truly non-epileptic', 'Truly epileptic'])
 ```
-<img src="./Server/outputImg/confusion_matrix/NeuralNetwork.png">
+![assessment_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/39e8dcba-dd3d-4987-b13c-b5c31d9a1ef5)
+
+
+### Training & final test
+Now, once we have established the optimal hyperparameters and learned how reliable this prediction algorithm turns out to be, we can run the training of the algorithm on the dataset of ***_train*** + ***_development*** and run the final test on the ***_test*** dataset.
+The results obtained from this final test are shown below:
+
+![final_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/32efd9f4-60f5-4204-afb3-49cfeeb2a9c4)
+![final_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/7fdc27d3-54dd-4777-944b-fa0e2ba02344)
+
 
 ## ❓ PMML creation: example with Neural Network
 
@@ -531,15 +536,16 @@ from sklearn2pmml.pipeline import PMMLPipeline
 
 # setting grid
 grid_pmml = {
-            'hidden_layer_sizes': (100, 100),
-            'activation': 'tanh',
-            'solver': 'sgd',
-            'alpha': 0.0001,
-            'max_iter': 1000
-        }
+    'hidden_layer_sizes': (300, 300, 300),           # N° of layers and neurons
+    'activation': 'relu',                            # Activation functions
+    'max_iter': 1000                                 # Maximum iterations
+}
 
 # preparing
-pipeline = PMMLPipeline([("classifier", MLPClassifier(**grid_pmml))])
+pipeline = PMMLPipeline([
+    ('scaler', StandardScaler()),
+    ("classifier", self.model_class(**grid_pmml)),
+])
 
 # training
 pipeline.fit(X, y)
