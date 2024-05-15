@@ -495,7 +495,7 @@ sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabel
 ![assessment_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/39e8dcba-dd3d-4987-b13c-b5c31d9a1ef5)
 
 
-### Training & final test
+### Final training & test
 Now, once we have established the optimal hyperparameters and learned how reliable this prediction algorithm turns out to be, we can run the training of the algorithm on the dataset of ***_train*** + ***_development*** and run the final test on the ***_test*** dataset.
 The results obtained from this final test are shown below:
 
