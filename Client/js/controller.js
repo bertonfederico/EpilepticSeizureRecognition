@@ -1,8 +1,8 @@
 // Controllers for slideshow
-var slideIndex = 1;
-var actualML = 'SupportVectorClassification'
-var actualAssessmentFinal = "assessment_"
-var actualTrainTest = "train_"
+let slideIndex = 1;
+let actualML = 'SupportVectorClassification';
+let actualAssessmentFinal = "assessment_";
+let actualTrainTest = "train_";
 showSlides(slideIndex);
 showCharts('../Server/outputImg/y_inspection/row_number.png', 'dataObservation')
 showCharts('../Server/outputImg/basic/eeg_heatmap.png', 'dataAnalysis')
