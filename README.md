@@ -32,10 +32,10 @@ it was obtained) is not needed, it can be removed from the dataset.
 ``` python
 import pandas as pd
 
-# Loading
+""" Loading """
 data = pd.read_csv('Dataset/data.csv')
 
-# Removing first column (not useful)
+""" Removing first column (not useful) """
 data.drop('Unnamed', axis=1, inplace=True)
 ```
 
@@ -75,17 +75,17 @@ data_y_4 = data[data['y'] == 4][:n]
 data_y_5 = data[data['y'] == 5][:n]
 samples_to_show = pd.concat([data_y_1, data_y_2, data_y_3, data_y_4, data_y_5], axis=0, ignore_index=True)
 
-# Creating a dataframe with one row for each value of X
+""" Creating a dataframe with one row for each value of X """
 df_splitted_seizure_short = (samples_to_show
                 .melt(id_vars=['y'], var_name='time_label', value_name='EEG', ignore_index=False)
                 .reset_index()
                 .rename(columns={'index': 'id'})
             )
 
-# Getting time_index column from time_label
+""" Getting time_index column from time_label """
 df_splitted_seizure_short['time_label'] = (df_splitted_seizure_short['time_label'].str.translate(str.maketrans('', '', 'X')).astype(int))
 
-# Creating and showing the graph
+""" Creating and showing the graph """
 g = sns.relplot(
     data=df_splitted_seizure_short,
     kind='line',
@@ -109,19 +109,19 @@ activities in height (electrical potential) and width (frequency).
 
 For each value of y is contained exactly 2300 rows:
 ``` python
-# Checking the number of rows for each value of y
 data_y_1 = data[data['y'] == 1]
 data_y_2 = data[data['y'] == 2]
 data_y_3 = data[data['y'] == 3]
 data_y_4 = data[data['y'] == 4]
 data_y_5 = data[data['y'] == 5]
 
-
-labels = 'y = 1', 'y = 2', 'y = 3', 'y = 4', 'y = 5'
+labels = ('Epileptic area\nin seizure activity', 'Tumor area', 'Healthy area\nin tumor brain',
+          'Healthy brain\n- eyes closed', 'Healthy brain\n- eyes open')
+colors = plt.cm.Blues(np.linspace(0.2, 0.7, len(labels)))
 sizes = [len(data_y_1.index), len(data_y_2.index), len(data_y_3.index), len(data_y_4.index), len(data_y_5.index)]
 fig, ax = plt.subplots()
-ax.pie(sizes, labels=labels, autopct='%1.1f%%')
-fig.suptitle("Number of rows for each value of y")
+ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
+plt.show()
 ```
 <img src="./Server/outputImg/y_inspection/row_number.png">
 
@@ -144,14 +144,14 @@ data_exploratory['y'] = np.where(data_exploratory['y'] == 1, 'Epileptic', 'Non-e
 
 ## 📉 Exploratory Data Analysis: examples
 
-### Heatmap
+### Correlation matrix
 ``` python
 import seaborn as sns
 
-# removing y values
+""" removing y values """
 heatmap_data = data_exploratory.iloc[:,0:178]
 
-# creating heatmap
+""" creating heatmap """
 sns.heatmap(heatmap_data.corr())
 plt.title("Heatmap")
 ```
@@ -168,7 +168,7 @@ frequency of neurological beats.
 Let\'s analyze the potential of EEG records; now we start by calculating
 the minimum and maximum values:
 ``` python
-# adding min, max and id columns
+""" adding min, max and id columns """
 df_potential_min_max = pd.DataFrame()
 df_potential_min_max['Min'] = data_exploratory.min(axis=1, numeric_only=True)
 df_potential_min_max['Max'] = data_exploratory.max(axis=1, numeric_only=True)
@@ -180,7 +180,7 @@ df_potential_min_max = (df_potential_min_max.melt(id_vars=['id', 'y'], var_name=
 We can try to analyze it with ***categorical plotes***, ***distribution
 plot*** with ***Kernel Density Estimation*** and ***relational plot***:
 ``` python
-# categorical plot
+""" categorical plot """
 cat = sns.catplot(
     data=df_potential_min_max,
     kind='boxen',
@@ -193,7 +193,7 @@ cat.fig.subplots_adjust(top=.9)
 cat.fig.suptitle("Categorical plot - min/max potential values")
 
 
-# distribution plot with Kernel Density Estimation
+""" distribution plot with Kernel Density Estimation """
 dist = sns.displot(
     data=df_potential_min_max,
     kind='kde',
@@ -206,7 +206,7 @@ dist.fig.suptitle("Kernel Density Estimate - min/max potential values")
 dist.set_xlabels('Potential values (μV)', clear_inner=False)
 
 
-# relational plot
+""" relational plot """
 rel = sns.relplot(
     data=df_potential_min_max,
     x='id',
@@ -236,14 +236,14 @@ axes.axhline(df_potential_min_max[(df_potential_min_max['y'] == 'Epileptic') & (
 Now let\'s try to analyze the difference between epileptic and
 non-epileptic EEG based on the Standard Deviation of the potential:
 ``` python
-# calculating Standard Deviation
+""" calculating Standard Deviation """
 df_potential_std = data_exploratory.iloc[:, 0:178]
 df_potential_std = df_potential_std.std(axis=1).reset_index()
 df_potential_std['y'] = data_exploratory['y']
 df_potential_std['id'] = df_potential_std.index + 1
 
 
-# categorical plot
+""" categorical plot """
 cat = sns.catplot(
     data=df_potential_std,
     kind='boxen',
@@ -255,7 +255,7 @@ cat.fig.subplots_adjust(top=.9)
 cat.fig.suptitle("Categorical plot - std potential values")
 
 
-# distribution plot with Kernel Density Estimation
+""" distribution plot with Kernel Density Estimation """
 dist = sns.displot(
     data=df_potential_std,
     kind='kde',
@@ -267,7 +267,7 @@ dist.fig.suptitle("Kernel Density Estimate - std potential values")
 dist.set_xlabels('Potential values (μV)', clear_inner=False)
 
 
-# relational plot
+""" relational plot """
 rel = sns.relplot(
     data=df_potential_std,
     x='id',
@@ -320,14 +320,14 @@ Let\'s now try to compare the frequency of epileptic and nonepileptic
 EEGs; we visualize it in categorical plot, distribution plot, and
 relational plot:
 ``` python
-# frequency calculation
+""" frequency calculation """
 df_frequency_mean = pd.DataFrame()
 df_frequency_mean['Freq'] = df_frequency_prepare['max_number']/1.02
 df_frequency_mean['id'] = data_exploratory.index + 1
 df_frequency_mean['y'] = data_exploratory['y']
 
 
-# categorical plot
+""" categorical plot """
 cat = sns.catplot(
     data=df_frequency_mean,
     kind='boxen',
@@ -339,7 +339,7 @@ cat.fig.subplots_adjust(top=.9)
 cat.fig.suptitle("Categorical plot - frequency values")
 
 
-# distribution plot with Kernel Density Estimation
+""" distribution plot with Kernel Density Estimation """
 dist = sns.displot(
     data=df_frequency_mean,
     kind='kde',
@@ -351,7 +351,7 @@ dist.fig.suptitle("Kernel Density Estimate - frequency values")
 dist.set_xlabels('Frequence values (Hz)', clear_inner=False)
 
 
-# relational plot
+""" relational plot """
 ret = sns.relplot(
     data=df_frequence_mean,
     x='id',
@@ -380,17 +380,10 @@ is far less in the case of epileptic EEGs.
 
 ## Ⓜ️ Machine Learning Algorithms: example with Neural Network
 
-Several Machine Learning algorithms have been carried out, including
+Several Machine Learning algorithms have been carried out, and those that created more significant results are given below:
 
--   Decision Tree Classifier;
--   Decision Tree Regression;
--   Extra Tree Classifier;
--   Extra Tree Regression;
--   Gaussian Naive Bayes;
--   k-nearest Neighbors;
--   Multi-layout Perception Classifier;
+-   Support Vector Classification.;
 -   Neural Network;
--   Support Vector Classification.
 
 Let\'s visualize ***Neural Network***.
 
@@ -401,88 +394,80 @@ into:
 
 -   ***X***, ***y***: ***X*** corresponds to the EEG data, ***y***
     corresponds to the type (epileptic or non-epileptic)
--   ***X_train***, ***y_train***, ***X_test***, ***y_test***:
-    \*\*\*\_train\*\*\* corresponds to 80% of the rows, while
-    \*\*\*\_test\*\*\* corresponds to 20%.
+-   ***X_train***, ***y_train***, ***X_development_test***, ***y_development_test***, ***X_test***, ***y_test***:
+    - ***_train*** corresponds to 70% of the rows, while
+    - ***_development_testn*** corresponds to 10% of the rows, while
+    - ***_test*** corresponds to 20%.
+
+Initially, training will be carried out on ***_train*** by cross-validation and testing then on ***_development_test***. Finally, once the functioning of these algorithms is established, the algorithm will be trained on ***_train*** + ***_development_test*** and tested on ***_test***.
 ``` python
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import numpy as np
 
-# dividing EEG data and epileptic/non-epileptic typology
+""" dividing EEG data and epileptic/non-epileptic typology """
 X = data.iloc[:,0:178].values
 y = data.iloc[:,178].values
 
-# dividing in training set and test set 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+""" dividing in training, development and test set """
+X_train_dev, X_test, y_train_dev, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_development, y_train, y_development, = train_test_split(X_train_dev, y_train_dev, test_size=1 / 8)
 
-# scaling
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
 ```
 
-### Training & test: a bit long 😉
+### Training & developement test: a bit long 😉
 
-Now treaning can be launched! Let\'s use GridSearchCV to run the
-training with different settings and figure out which one allows better
-prediction:
+Now treaning can be launched! Let\'s use GridSearchCV to run the training with different gyperparameters and figure out which one allows better prediction:
 ``` python
 from sklearn.model_selection import GridSearchCV
 from sklearn.neural_network import MLPClassifier
 
 
-#################################
-####### Training and Test #######
-#################################
-#preparing
-grid = {
-    'hidden_layer_sizes': [(20,), (100, 100)],
-    'activation': ['tanh', 'relu'],
-    'solver': ['sgd'],
-    'alpha': [0.0001, 0.05],
-    'max_iter': [1000]
-}
-cross_val = GridSearchCV(MLPClassifier(), grid, cv = 7, n_jobs=2, verbose=10)
+"""""""""""""""""""""""""""""""""""""""""""""
+""""""  Training and development test  """"""
+"""""""""""""""""""""""""""""""""""""""""""""
+""" scaling """
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_development = sc.transform(X_development)
 
-# training
+""" preparing """
+test_grid = {
+    'hidden_layer_sizes': [(178, 178, 178), (300, 300, 300)],  # N° of layers and neurons
+    'activation': ['relu', 'tanh'],                            # Activation functions
+    'max_iter': [1000, 100000]                                 # Maximum iterations
+}
+cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7, verbose=10)
+
+""" training """
 cross_val.fit(X_train, y_train)
 
-# test
-Y_hat_test = cross_val.predict(X_test)
+""" test """
+y_hat_test  = cross_val.predict(X_test)
 
-# printing results
-print('Tuned hpyerparameters (best parameters): ', cross_val.best_params_)
-print('Estimator that was chosen by the search: ', cross_val.best_estimator_)
+""" best hyperparameters """
+best_params_ = cross_val.best_params_
 ```
-
-### Evaluation
-
-Now training and testing is over! Let\'s look at a generic
-classification report and scores to see if the chosen ML algorithm is
-suitable:
+#### Metrics
+Now training and developement testing is over! Let\'s look at a generic classification report and scores to see if the chosen ML algorithm is suitable:
 ``` python
 from sklearn.metrics import f1_score, accuracy_score, cohen_kappa_score, jaccard_score, precision_score, recall_score, balanced_accuracy_score
 from sklearn.metrics import classification_report
 
+accuracy_score_val = accuracy_score(y_vals, y_hat_vals)
+balanced_score_val = balanced_accuracy_score(y_vals, y_hat_vals)
+precision_score_val = precision_score(y_vals, y_hat_vals)
+recall_score_val = recall_score(y_vals, y_hat_vals)
+f1_score_val = f1_score(y_vals, y_hat_vals)
+roc_curve_val = roc_auc_score(y_vals, y_hat_vals)
 
-# classification report
-print('Model classification report with GridSearcg CV: \n', classification_report(y_test, Y_hat_test))
-
-# evaluations
-accuracy_score_val = accuracy_score(y_test, Y_hat_test)
-f1_score_val = f1_score(y_test, Y_hat_test)
-cohen_score_val = cohen_kappa_score(y_test, Y_hat_test)
-jaccard_score_val = jaccard_score(y_test, Y_hat_test)
-precision_score_val = precision_score(y_test, Y_hat_test)
-recall_score_val = recall_score(y_test, Y_hat_test)
-balanced_score_val = balanced_accuracy_score(y_test, Y_hat_test)
-eval = ['Accuracy:', 'F1:', 'Cohen Kappa:', 'Jaccard:', 'Precision:', 'Recall:', 'Balanced Accuracy:']
-score = [accuracy_score_val, f1_score_val, cohen_score_val, jaccard_score_val, precision_score_val, recall_score_val, balanced_score_val]
-dict = {'Evaluation': eval, 'Score on the test set': score}
-df = pd.DataFrame(dict)
-df = df.style.background_gradient()
-df
+""" printing metrics evaluations """
+print("Accuracy score on the development test set: ", accuracy_score_val)
+print("Balanced Accuracy score on the development test set: ", balanced_score_val)
+print("Precision Score on the development test set: ", precision_score_val)
+print("Recall score on the development test set: ", recall_score_val)
+print("F1 score on the development test set: ", f1_score_val)
+print("ROC curve score on the development" test set: ", roc_curve_val)
 ```
 
     Model classification report with GridSearcg CV: 
@@ -497,19 +482,17 @@ df
 
 <img src="./Server/outputImg/evaluation/NeuralNetwork.png">
 
-The test set scores are between 88% and 97%, so Neural Network is an
-excellent Machine Learning algorithm for classification of epileptic
+The test set scores are between 88% and 97%, so Neural Network is an excellent Machine Learning algorithm for classification of epileptic
 EEGs!
 
-### Confusion matrix
+#### Confusion matrix
 
-To have a graphic proof of the evaluation just obtained, let\'s
-visualize a confusion matrix:
+To have a graphic proof of the evaluation just obtained, let\'s visualize a confusion matrix:
 ``` python
 from sklearn.metrics import confusion_matrix
 
 
-cm = confusion_matrix(y_test, Y_hat_test)
+cm = confusion_matrix(y_test, y_hat_test)
 fig, ax = plt.subplots()
 sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabels = ['Non-epileptic', 'Epileptic'], yticklabels = ['Non-epileptic', 'Epileptic'])
 ```
