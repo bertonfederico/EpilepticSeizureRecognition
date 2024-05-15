@@ -499,8 +499,10 @@ sns.heatmap(cm, ax = ax, annot = True, cmap = plt.cm.Reds, fmt = 'd', xticklabel
 Now, once we have established the optimal hyperparameters and learned how reliable this prediction algorithm turns out to be, we can run the training of the algorithm on the dataset of ***_train*** + ***_development*** and run the final test on the ***_test*** dataset.
 The results obtained from this final test are shown below:
 
-![final_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/32efd9f4-60f5-4204-afb3-49cfeeb2a9c4)
-![final_test_NeuralNetwork](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/7fdc27d3-54dd-4777-944b-fa0e2ba02344)
+<div style="display: flex; justify-content: space-around;">
+    <img src="https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/32efd9f4-60f5-4204-afb3-49cfeeb2a9c4" style="width: 50%;">
+    <img src="https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/7fdc27d3-54dd-4777-944b-fa0e2ba02344" style="width: 45%;">
+</div>
 
 
 ## ❓ PMML creation: example with Neural Network
