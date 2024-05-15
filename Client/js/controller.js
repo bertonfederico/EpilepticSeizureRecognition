@@ -4,8 +4,8 @@ var actualML = 'SupportVectorClassification'
 var actualAssessmentFinal = "assessment_"
 var actualTrainTest = "train_"
 showSlides(slideIndex);
-showCharts('../Server/outputImg/y_inspection/y_differences.png', 'dataObservation')
-showCharts('../Server/outputImg/basic/eeg_heatmap.png', 'dataAnalisys')
+showCharts('../Server/outputImg/y_inspection/row_number.png', 'dataObservation')
+showCharts('../Server/outputImg/basic/eeg_heatmap.png', 'dataAnalysis')
 showChartsML('SupportVectorClassification', 1)
 
 function plusSlides(n) {

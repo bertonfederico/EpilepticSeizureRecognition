@@ -15,8 +15,8 @@
         <div class="mySlides fade">
             <div class="centeredDiv">
                 <select onchange="showCharts(this.value, 'dataObservation')" required>
-                    <option value="../Server/outputImg/y_inspection/y_differences.png">Amplitude values</option>
                     <option value="../Server/outputImg/y_inspection/row_number.png">Samples percentage</option>
+                    <option value="../Server/outputImg/y_inspection/y_differences.png">Amplitude values</option>
                 </select>
             </div>
             <div class="myInnerSlides fade centeredDiv">
@@ -25,7 +25,7 @@
         </div>
         <div class="mySlides fade">
             <div class="centeredDiv">
-                <select onchange="showCharts(this.value, 'dataAnalisys')" required>
+                <select onchange="showCharts(this.value, 'dataAnalysis')" required>
                     <option value="../Server/outputImg/basic/eeg_heatmap.png">Correlation matrix</option>
                     <option value="../Server/outputImg/pot_min_max/cat_plot.png">Min/max potential - categorical box plot</option>
                     <option value="../Server/outputImg/pot_min_max/kde_plot.png">Min/max potential - kernel density estimation</option>
@@ -39,7 +39,7 @@
                 </select>
             </div>
             <div class="myInnerSlides fade centeredDiv">
-                <img id="dataAnalisys" height="440" src="">
+                <img id="dataAnalysis" height="440" src="">
             </div>
         </div>
         <div class="mySlides fade">
