@@ -116,7 +116,7 @@ class AbstractMl(object):
         """ heatmap plot """
         fig, ax = plt.subplots()
         sns.heatmap(cm, ax=ax, annot=True, cmap=sns.color_palette("Blues_d", as_cmap=True), fmt='d',
-                    xticklabels=['Predicted-epileptic', 'Predicted epileptic'],
+                    xticklabels=['Predicted non-epileptic', 'Predicted epileptic'],
                     yticklabels=['Truly non-epileptic', 'Truly epileptic'])
         plt.gcf().set_facecolor('none')
         plt.savefig('..\\outputImg\\confusion_matrix\\' + actual_dir + self.restr_name + '.png')
