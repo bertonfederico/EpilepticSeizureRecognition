@@ -47,7 +47,7 @@ class AbstractMl(object):
 
     def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray):
         """ preparing """
-        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring='f1', verbose=10)
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring='f1', verbose=1)
 
         """ training """
         cross_val.fit(X_train, y_train)
@@ -155,7 +155,7 @@ class AbstractMl(object):
         print("Precision Score on the " + test_type + " test set: ", precision_score_val)
         print("Recall score on the " + test_type + " test set: ", recall_score_val)
         print("F1 score on the " + test_type + " test set: ", f1_score_val)
-        print("ROC curve score on the " + test_type + " test set: ", roc_curve_val, "\n")
+        print("ROC curve score on the " + test_type + " test set: ", roc_curve_val)
 
     @staticmethod
     def get_phase(is_final_test, is_test):
