@@ -13,7 +13,8 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-ml_models = [Svc]#, NeuralNetwork]
+ml_models = [Svc, NeuralNetwork]
+over_sampling = False
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 """  Loading and arrangement of the dataset  """
@@ -69,13 +70,14 @@ X_development = sc.transform(X_development)
 best_params_list = []
 
 """ over-sampling """
-smote = SMOTE(random_state=1)
-X_train, y_train = smote.fit_resample(X_train, y_train)
+if over_sampling:
+    smote = SMOTE(random_state=1)
+    X_train, y_train = smote.fit_resample(X_train, y_train)
 
 """ running training and assessment """
 for i, model in enumerate(ml_models):
     act_model = model(i == (len(ml_models) - 1))
-    best_params = act_model.train_assessment_phase(X_train, y_train, X_development, y_development)
+    best_params = act_model.train_assessment_phase(X_train, y_train, X_development, y_development, over_sampling)
     best_params_list.append(best_params)
 
 
@@ -91,8 +93,9 @@ X_train_dev = sc.fit_transform(X_train_dev)
 X_test = sc.transform(X_test)
 
 """ over-sampling """
-smote = SMOTE(random_state=1)
-X_train_dev, y_train_dev = smote.fit_resample(X_train_dev, y_train_dev)
+if over_sampling:
+    smote = SMOTE(random_state=1)
+    X_train_dev, y_train_dev = smote.fit_resample(X_train_dev, y_train_dev)
 
 """ running test """
 for i, model in enumerate(ml_models):

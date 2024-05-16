@@ -27,7 +27,7 @@ class AbstractMl(object):
         self.total_df = pd.DataFrame(dictionary)
 
     def train_assessment_phase(self, X_train: np.ndarray, y_train: np.ndarray,
-                               X_development: np.ndarray, y_development: np.ndarray):
+                               X_development: np.ndarray, y_development: np.ndarray, over_sampling: bool):
         """
         Train & test phase for hyperparameters
 
@@ -35,19 +35,24 @@ class AbstractMl(object):
         :param y_train: y dataset for model training
         :param X_development: features dataset for test prediction
         :param y_development: y dataset for prediction checking
+        :param over_sampling: Ture if data are over sampled, false otherwise
         :return: best_params_
         """
 
-        y_hat_train, y_hat_test, best_params_ = self.train_assessment(X_train, y_train, X_development)
+        y_hat_train, y_hat_test, best_params_ = self.train_assessment(X_train, y_train, X_development, over_sampling)
         self.confusion_matrix(y_train, y_hat_train, False, False)
         self.confusion_matrix(y_development, y_hat_test, False, True)
         self.evaluation(y_train, y_hat_train, False, "development", False)
         self.evaluation(y_development, y_hat_test, False, "development", True)
         return best_params_
 
-    def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray):
+    def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, over_sampling: bool):
+        """ refit """
+        if over_sampling: refit = 'roc_auc'
+        else: refit = 'f1'
+
         """ preparing """
-        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring='f1', verbose=1)
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=['roc_auc', 'f1'], refit=refit, verbose=1)
 
         """ training """
         cross_val.fit(X_train, y_train)
