@@ -12,7 +12,7 @@ class Svc(abstract_ml.AbstractMl):
         model_name = "Support Vector Classification"
         model_class = SVC
         test_grid = {
-            'kernel': ['rbf', 'poly', 'sigmoid'],     # Kernel type
-            "C": [0.01, 0.1, 1, 10],                  # Regularization parameter
+            'kernel': ['rbf'],            # Kernel type                  ['rbf', 'sigmoid']
+            "C": [1000],                  # Regularization parameter     [0.1, 10, 1000, 10000]
         }
         super().__init__(is_last, model_name, test_grid, model_class)
