@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
 
 from data_analysis import data_observation, exploratory_data_analysis
 
@@ -12,7 +13,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-ml_models = [Svc, NeuralNetwork]
+ml_models = [Svc]#, NeuralNetwork]
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 """  Loading and arrangement of the dataset  """
@@ -67,6 +68,10 @@ X_train = sc.fit_transform(X_train)
 X_development = sc.transform(X_development)
 best_params_list = []
 
+""" over-sampling """
+smote = SMOTE(random_state=1)
+X_train, y_train = smote.fit_resample(X_train, y_train)
+
 """ running training and assessment """
 for i, model in enumerate(ml_models):
     act_model = model(i == (len(ml_models) - 1))
@@ -84,6 +89,10 @@ print('#########################################################################
 sc = StandardScaler()
 X_train_dev = sc.fit_transform(X_train_dev)
 X_test = sc.transform(X_test)
+
+""" over-sampling """
+smote = SMOTE(random_state=1)
+X_train_dev, y_train_dev = smote.fit_resample(X_train_dev, y_train_dev)
 
 """ running test """
 for i, model in enumerate(ml_models):
