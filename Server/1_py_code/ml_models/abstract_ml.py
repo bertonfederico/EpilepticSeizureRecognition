@@ -47,7 +47,7 @@ class AbstractMl(object):
 
     def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray):
         """ preparing """
-        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7, verbose=10)
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring='f1', verbose=10)
 
         """ training """
         cross_val.fit(X_train, y_train)
