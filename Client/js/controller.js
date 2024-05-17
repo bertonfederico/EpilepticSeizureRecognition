@@ -3,9 +3,11 @@ let slideIndex = 1;
 let actualML = 'SupportVectorClassification';
 let actualAssessmentFinal = "assessment_";
 let actualTrainTest = "train_";
+let actualDataAnalysis1 = "../Server/outputImg/pot_min_max/";
+let actualDataAnalysis2 = "cat_plot.png";
 showSlides(slideIndex);
+showChartsDataAnalysis("../Server/outputImg/pot_min_max/", 1);
 showCharts('../Server/outputImg/y_inspection/row_number.png', 'dataObservation')
-showCharts('../Server/outputImg/basic/eeg_heatmap.png', 'dataAnalysis')
 showChartsML('SupportVectorClassification', 1)
 
 function plusSlides(n) {
@@ -36,6 +38,12 @@ function showSlides(n) {
 // Controllers for charts
 function showCharts(imgPos, imgIcon) {
 	document.getElementById(imgIcon).src = imgPos;
+}
+
+function showChartsDataAnalysis(imgPos, id) {
+	if (id === 1) actualDataAnalysis1 = imgPos
+	else if (id === 2) actualDataAnalysis2 = imgPos
+	document.getElementById('dataAnalysis').src = actualDataAnalysis1 + actualDataAnalysis2;
 }
 
 function showChartsML(imgPos, id) {
