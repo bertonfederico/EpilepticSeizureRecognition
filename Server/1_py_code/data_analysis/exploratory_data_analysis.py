@@ -18,9 +18,6 @@ def create_plots(input_data: pd.DataFrame):
     data_exploratory = input_data.copy()
     data_exploratory['y'] = np.where(data_exploratory['y'] == 1, 'Epileptic', 'Non-epileptic')
 
-    """ heatmap """
-    create_heatmap(data_exploratory)
-
     """ potential """
     create_potential_plot(data_exploratory)
 
@@ -33,21 +30,6 @@ def create_plots(input_data: pd.DataFrame):
 """"""""""""""""""""""""""""""""""""
 """   Exploratory Data Analysis  """
 """"""""""""""""""""""""""""""""""""
-def create_heatmap(dataframe: pd.DataFrame):
-    """
-    Heatmap creation
-    :param dataframe: EEG dataset
-    """
-
-    """ removing y values """
-    heatmap_data = dataframe.iloc[:, 0:178]
-
-    """ creating heatmap """
-    sns.heatmap(heatmap_data.corr(), cmap=sns.color_palette("Blues_d", as_cmap=True))
-    plt.gcf().set_facecolor('none')
-    print_save_plots("basic\\eeg_heatmap", False)
-
-
 def create_potential_plot(dataframe: pd.DataFrame):
     """
     Potential plots creation

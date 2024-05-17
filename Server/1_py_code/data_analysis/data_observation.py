@@ -5,6 +5,45 @@ import seaborn as sns
 
 
 def observation(data: pd.DataFrame):
+    """
+    Observing data before ml
+    :param data: input dataset
+    """
+
+    y_percentage(data)
+    y_differences(data)
+    create_heatmap(data)
+
+
+def y_percentage(data: pd.DataFrame):
+    """
+    Calculating and showing y values percentage
+    :param data: input dataset
+    """
+
+    """ Checking the number of rows for each value of y """
+    data_y_1 = data[data['y'] == 1]
+    data_y_2 = data[data['y'] == 2]
+    data_y_3 = data[data['y'] == 3]
+    data_y_4 = data[data['y'] == 4]
+    data_y_5 = data[data['y'] == 5]
+    labels = ('Epileptic area\nin seizure activity', 'Tumor area', 'Healthy area\nin tumor brain',
+              'Healthy brain\n- eyes closed', 'Healthy brain\n- eyes open')
+    colors = plt.cm.Blues(np.linspace(0.2, 0.7, len(labels)))
+    sizes = [len(data_y_1.index), len(data_y_2.index), len(data_y_3.index), len(data_y_4.index), len(data_y_5.index)]
+    fig, ax = plt.subplots()
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
+    fig.set_facecolor('none')
+    plt.savefig('..\\outputImg\\y_inspection\\row_number.png')
+    plt.show()
+
+
+def y_differences(data: pd.DataFrame):
+    """
+    Showing x differences for every y value
+    :param data: input dataset
+    """
+
     sns.set_style("whitegrid")
 
     """ Selecting n rows for each value of y """
@@ -52,18 +91,18 @@ def observation(data: pd.DataFrame):
     plt.savefig('..\\outputImg\\y_inspection\\y_differences.png')
     plt.show()
 
-    """ Checking the number of rows for each value of y """
-    data_y_1 = data[data['y'] == 1]
-    data_y_2 = data[data['y'] == 2]
-    data_y_3 = data[data['y'] == 3]
-    data_y_4 = data[data['y'] == 4]
-    data_y_5 = data[data['y'] == 5]
-    labels = ('Epileptic area\nin seizure activity', 'Tumor area', 'Healthy area\nin tumor brain',
-              'Healthy brain\n- eyes closed', 'Healthy brain\n- eyes open')
-    colors = plt.cm.Blues(np.linspace(0.2, 0.7, len(labels)))
-    sizes = [len(data_y_1.index), len(data_y_2.index), len(data_y_3.index), len(data_y_4.index), len(data_y_5.index)]
-    fig, ax = plt.subplots()
-    ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
-    fig.set_facecolor('none')
-    plt.savefig('..\\outputImg\\y_inspection\\row_number.png')
+
+def create_heatmap(dataframe: pd.DataFrame):
+    """
+    Heatmap creation
+    :param dataframe: EEG dataset
+    """
+
+    """ removing y values """
+    heatmap_data = dataframe.iloc[:, 0:178]
+
+    """ creating heatmap """
+    sns.heatmap(heatmap_data.corr(), cmap=sns.color_palette("Blues_d", as_cmap=True))
+    plt.gcf().set_facecolor('none')
+    plt.savefig('..\\outputImg\\y_inspection\\eeg_heatmap.png')
     plt.show()
