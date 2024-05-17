@@ -11,8 +11,8 @@ class NeuralNetwork(abstract_ml.AbstractMl):
         model_name = "Neural Network"
         model_class = MLPClassifier
         test_grid = {
-            'hidden_layer_sizes': [(178, 178, 178), (300, 300, 300)],  # N° of layers and neurons
-            'activation': ['relu', 'tanh'],                            # Activation functions
-            'max_iter': [1000, 100000]                                 # Maximum iterations
+            'hidden_layer_sizes': [(400, 400, 400), (400, 400, 400, 400)],  # N° of layers and neurons     [(178, 178, 178), (400, 400, 400), (400, 400, 400, 400)]
+            'activation': ['relu'],                                         # Activation functions         ['relu', 'tanh']
+            'max_iter': [100000]                                            # Maximum iterations           [1000, 100000]
         }
         super().__init__(is_last, model_name, test_grid, model_class)

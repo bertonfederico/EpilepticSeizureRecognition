@@ -52,7 +52,7 @@ class AbstractMl(object):
         else: refit = 'f1'
 
         """ preparing """
-        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=['roc_auc', 'f1'], refit=refit, verbose=1)
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=['roc_auc', 'f1'], refit=refit)
 
         """ training """
         cross_val.fit(X_train, y_train)
