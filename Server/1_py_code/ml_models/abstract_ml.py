@@ -54,7 +54,7 @@ class AbstractMl(object):
             refit = scoring = 'f1'
 
         """ preparing """
-        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=scoring, refit=refit)
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=scoring, refit=refit, n_jobs=-1)
 
         """ training """
         cross_val.fit(X_train, y_train)
