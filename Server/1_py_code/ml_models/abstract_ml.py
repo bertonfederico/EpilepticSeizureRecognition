@@ -48,11 +48,13 @@ class AbstractMl(object):
 
     def train_assessment(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, over_sampling: bool):
         """ refit """
-        if over_sampling: refit = 'roc_auc'
-        else: refit = 'f1'
+        if over_sampling:
+            refit = scoring = 'roc_auc'
+        else:
+            refit = scoring = 'f1'
 
         """ preparing """
-        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=['roc_auc', 'f1'], refit=refit)
+        cross_val = GridSearchCV(self.model_class(), self.test_grid, cv=7,  scoring=scoring, refit=refit)
 
         """ training """
         cross_val.fit(X_train, y_train)
