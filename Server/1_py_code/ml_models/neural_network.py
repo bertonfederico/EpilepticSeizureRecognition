@@ -12,7 +12,9 @@ class NeuralNetwork(abstract_ml.AbstractMl):
         model_class = MLPClassifier
         test_grid = {
             'hidden_layer_sizes': [(400, 400, 400, 400)],    # N° of layers and neurons     [(178, 178, 178), (400, 400, 400), (400, 400, 400, 400)]
-            'activation': ['relu'],                          # Activation functions         ['relu', 'tanh']
+            'activation': ['relu'],                          # Activation functions         ['logistic', 'relu', 'tanh']
+            'solver': ['adam'],                              # Solvers                      ['sgd', 'adam']
+            'alpha': [0.0001],                               # L2 Strength                  [0.0001, 0.01, 0.1]
             'max_iter': [100000]                             # Maximum iterations           [1000, 100000]
         }
         super().__init__(is_last, model_name, test_grid, model_class)
