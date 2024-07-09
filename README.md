@@ -1,4 +1,4 @@
-# 🏥 Epileptic Seizure Recognition
+# Epileptic Seizure Recognition
 ![image](https://github.com/bertonfederico/EpilepticSeizureRecognition/assets/105301467/bb796ac9-2b2c-485b-9be0-38a834299020)
 
 
